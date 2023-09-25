@@ -86,6 +86,7 @@
         this.rayProgram = new tgl.Shader(Shaders, "ray-vert", "ray-frag");
         this.hConfProgram = new tgl.Shader(Shaders, "h-conf-vert", "h-frag"); // hProgram added in setSpadPositions
         this.geometryProgram = new tgl.Shader(Shaders, "geometry-vert", "geometry-frag");
+        this.rwallProgram = new tgl.Shader(Shaders, "bp-vert", "rwall-frag");
         this.tracePrograms = [];
         for (var i = 0; i < scenes.length; ++i)
             this.tracePrograms.push(new tgl.Shader(Shaders, "trace-vert", scenes[i]));
@@ -1222,7 +1223,7 @@
         this.msPerFrame = 1000 / 100;
         this.currentCall = 0;
         this.nlosElapsedTimes = [];
-        this.setSpadPos([0, -0.6]);
+        // this.setSpadPos([0, -0.6]);
         this.confCounter = 0;
         if (this.isConf) {
             this.laserGrid = [this.spadPoints[0], this.spadPoints[1]];
@@ -1317,6 +1318,10 @@
         if (this.laserGrid.length == 0) {
             console.log("The light is not reaching the relay wall");
             this.laserGrid = [1.78, 0];
+        }
+
+        if (this.spreadType === tcore.Renderer.SPREAD_LASER) {
+            this.setSpadPos(this.laserPos);
         }
 
         if (reset)
@@ -1532,9 +1537,15 @@
             this.sceneVBOs[this.currentScene].draw(this.geometryProgram, this.gl.LINES);
         }
 
-        this.geometryProgram.uniform4F("uColor", 0.0, 1.0, 1.0, 1.0);
-        this.sbVbo.bind();
-        this.sbVbo.draw(this.geometryProgram, this.gl.LINES);
+        this.rwallProgram.bind();
+        this.rwallProgram.uniformF("numSpads", this.numSpads);
+        this.rwallProgram.uniformF("spadRadius", 0.007); // It's not this.spadRadius because it is small and difficult to see
+        this.rwallProgram.uniformF("aspect", this.aspect);
+        this.rwallProgram.uniform2F("firstSpad", this.spadPoints[0], this.spadPoints[1]);
+        this.rwallProgram.uniform2F("lastSpad", this.spadPoints[2*this.numSpads-2], this.spadPoints[2*this.numSpads-1]);
+        this.rwallProgram.uniform4F("uColor", 0.0, 1.0, 1.0, 1.0);
+        this.quadVbo.bind();
+        this.quadVbo.draw(this.rwallProgram, this.gl.TRIANGLE_FAN);
         this.gl.disable(this.gl.BLEND);
     }
 
@@ -1783,9 +1794,15 @@
             this.sceneVBOs[this.currentScene].draw(this.geometryProgram, this.gl.LINES);
         }
 
-        this.geometryProgram.uniform4F("uColor", 0.0, 1.0, 1.0, 1.0);
-        this.sbVbo.bind();
-        this.sbVbo.draw(this.geometryProgram, this.gl.LINES);
+        this.rwallProgram.bind();
+        this.rwallProgram.uniformF("numSpads", this.numSpads);
+        this.rwallProgram.uniformF("spadRadius", 0.007); // It's not this.spadRadius because it is small and difficult to see
+        this.rwallProgram.uniformF("aspect", this.aspect);
+        this.rwallProgram.uniform2F("firstSpad", this.spadPoints[0], this.spadPoints[1]);
+        this.rwallProgram.uniform2F("lastSpad", this.spadPoints[2*this.numSpads-2], this.spadPoints[2*this.numSpads-1]);
+        this.rwallProgram.uniform4F("uColor", 0.0, 1.0, 1.0, 1.0);
+        this.quadVbo.bind();
+        this.quadVbo.draw(this.rwallProgram, this.gl.TRIANGLE_FAN);
         gl.disable(gl.BLEND);
     }
 
