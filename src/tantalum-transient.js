@@ -21,7 +21,7 @@ var Transient = function () {
     } catch (e) {
         /* Errors here are a bit more serious and shouldn't normally happen.
            Let's just dump what we have and hope the user can make sense of it */
-        this.fail("Ooops! Something unexpected happened. The error message is listed below:<br/>" +
+        this.fail("Something unexpected happened. The error message is listed below:<br/>" +
             "<pre>" + e.message + "</pre>");
         return;
     }
@@ -143,28 +143,27 @@ function closeBox(x1, y1, x2, y2, width) {
 
 Transient.prototype.setupUI = function () {
     var config = {
-        "reconstruction_resolutions": [32, 64, 128, 256, 512, 1024, 2048, 4096],
+        "reconstruction_resolutions": [32, 64, 128, 256, 512, 1024],
         "scenes": [
-            { 'shader': 'scene10', 'name': 'Line', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene9', 'name': 'Circle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene20', 'name': 'Box', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene11', 'name': 'Visibility test', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            // {'shader': 'scene12', 'name': 'Virtual mirror',   'posA': [0.5, 0.8],       'posB': [0.837, 0.5],      'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene14', 'name': 'Virtual mirror', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene16', 'name': 'Virtual mirror 2', 'posA': [0.64, 0.995], 'posB': [0.837, 0.75], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            // { 'shader': 'scene13', 'name': 'Virtual mirror 2', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene15', 'name': 'Rotated segment', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            // { 'shader': 'scene17', 'name': 'Non-working second corner', 'posA': [0.218, 0.1], 'posB': [0.359, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene18', 'name': 'Second corner', 'posA': [0.625, 0.9], 'posB': [0.837, 0.8], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene19', 'name': 'Second corner target', 'posA': [0.625, 0.9], 'posB': [0.837, 0.8], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene21', 'name': 'Two boxes', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse },
-            { 'shader': 'scene22', 'name': 'Triangle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': genScene.MaterialType.Diffuse }
+            { 'shader': 'scene10', 'name': 'Line', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene9', 'name': 'Circle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene20', 'name': 'Box', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene11', 'name': 'Visibility test', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene14', 'name': 'Virtual mirror', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            // { 'shader': 'scene16', 'name': 'Virtual mirror 2', 'posA': [0.64, 0.995], 'posB': [0.837, 0.75], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene15', 'name': 'Rotated segment', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            // { 'shader': 'scene18', 'name': 'Second corner', 'posA': [0.625, 0.9], 'posB': [0.837, 0.8], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            // { 'shader': 'scene19', 'name': 'Second corner target', 'posA': [0.625, 0.9], 'posB': [0.837, 0.8], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene21', 'name': 'Two boxes', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            // { 'shader': 'scene22', 'name': 'Triangle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene24-bunny', 'name': 'Coarse bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene26-smooth-bunny', 'name': 'Smooth bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
         ],
         "capture_methods": ["Non-confocal", "Confocal"],
-        "camera_models": ["Confocal", "Transient", "Conventional"],
-        "spad_num": [16, 32, 64, 128],
-        "filters": ["None", "Laplacian", "Laplacian of Gaussian", "Phasor Fields"],
-        "tone_mapper_labels": ["None", "Logarithmic", "Square root"],
+        "camera_models": ["Confocal", "Time-gated", "Steady-state"],
+        "spad_num": [16, 32, 64, 128, 256],
+        "filters": ["None", "Laplacian", "Laplacian of Gaussian", "Phasor Fields"], // TODO: Phasor-based instead, careful with type='pf'
+        "tone_mapper_labels": ["Linear", "Logarithmic", "Square root"],
         "tone_mapper_ids": ["none", "log(1.0+", "sqrt("],
         "magnitudes": ["Amplitude", "Phase"],
         "material_types": ["Diffuse", "Mirror", "Dielectric", "RoughMirror", "RoughDielectric"],
@@ -201,6 +200,8 @@ Transient.prototype.setupUI = function () {
             [0.0, 0.4, 0.2, 0.0,
                 0.2, 0.0, 0.0, -0.4,
                 0.0, -0.4, 0.0, 0.4],
+            // bunny_vertices.txt
+            [ 0.61, 0.08, 0.61, 0.1, 0.61, 0.1, 0.615, 0.15, 0.615, 0.15, 0.605, 0.165, 0.605, 0.165, 0.48, 0.2, 0.48, 0.2, 0.3999999999999999, 0.25, 0.3999999999999999, 0.25, 0.38, 0.32, 0.38, 0.32, 0.3899999999999999, 0.36, 0.3899999999999999, 0.36, 0.4099999999999999, 0.37, 0.4099999999999999, 0.37, 0.49, 0.32, 0.49, 0.32, 0.5499999999999999, 0.3, 0.5499999999999999, 0.3, 0.5299999999999999, 0.32, 0.5299999999999999, 0.32, 0.5199999999999999, 0.35, 0.5199999999999999, 0.35, 0.5299999999999999, 0.39, 0.5299999999999999, 0.39, 0.5499999999999999, 0.4, 0.5499999999999999, 0.4, 0.6, 0.38, 0.6, 0.38, 0.6599999999999999, 0.3, 0.6599999999999999, 0.3, 0.69, 0.24, 0.69, 0.24, 0.75, 0.24, 0.75, 0.24, 0.7999999999999999, 0.22, 0.7999999999999999, 0.22, 0.82, 0.2, 0.82, 0.2, 0.85, 0.16, 0.85, 0.16, 0.8699999999999999, 0.125, 0.8699999999999999, 0.125, 0.875, 0.1, 0.875, 0.1, 0.8699999999999999, 0.08, 0.8699999999999999, 0.08, 0.8799999999999999, 0.06, 0.8799999999999999, 0.06, 0.8699999999999999, 0.04, 0.8699999999999999, 0.04, 0.8599999999999999, 0.02, 0.8599999999999999, 0.02, 0.84, 0.0, 0.84, 0.0, 0.835, -0.005, 0.835, -0.005, 0.838, -0.01, 0.838, -0.01, 0.838, -0.02, 0.838, -0.02, 0.847, -0.03, 0.847, -0.03, 0.853, -0.045, 0.853, -0.045, 0.865, -0.05, 0.865, -0.05, 0.8699999999999999, -0.06, 0.8699999999999999, -0.06, 0.8799999999999999, -0.07, 0.8799999999999999, -0.07, 0.8899999999999999, -0.087, 0.8899999999999999, -0.087, 0.8919999999999999, -0.1, 0.8919999999999999, -0.1, 0.895, -0.135, 0.895, -0.135, 0.8979999999999999, -0.137, 0.8979999999999999, -0.137, 0.8979999999999999, -0.15, 0.8979999999999999, -0.15, 0.8999999999999999, -0.17, 0.8999999999999999, -0.17, 0.9019999999999999, -0.18, 0.9019999999999999, -0.18, 0.8999999999999999, -0.186, 0.8999999999999999, -0.186, 0.8979999999999999, -0.192, 0.8979999999999999, -0.192, 0.8899999999999999, -0.21, 0.8899999999999999, -0.21, 0.8899999999999999, -0.22, 0.8899999999999999, -0.22, 0.891, -0.24, 0.891, -0.24, 0.8799999999999999, -0.265, 0.8799999999999999, -0.265, 0.883, -0.28, 0.883, -0.28, 0.883, -0.29, 0.883, -0.29, 0.875, -0.3, 0.875, -0.3, 0.8599999999999999, -0.32, 0.8599999999999999, -0.32, 0.875, -0.33, 0.875, -0.33, 0.879, -0.34, 0.879, -0.34, 0.8799999999999999, -0.35, 0.8799999999999999, -0.35, 0.8799999999999999, -0.375, 0.8799999999999999, -0.375, 0.8779999999999999, -0.38, 0.8779999999999999, -0.38, 0.8739999999999999, -0.38, 0.8739999999999999, -0.38, 0.873, -0.383, 0.873, -0.383, 0.8599999999999999, -0.387, 0.8599999999999999, -0.387, 0.845, -0.387, 0.845, -0.387, 0.835, -0.39, 0.835, -0.39, 0.76, -0.395, 0.76, -0.395, 0.725, -0.398, 0.725, -0.398, 0.71, -0.396, 0.71, -0.396, 0.6399999999999999, -0.398,],
         ],
         "addition_modes": ["Absolute space", "Complex space"],
         "resolution_labels": [],
@@ -227,7 +228,7 @@ Transient.prototype.setupUI = function () {
     var filterTypes = [];
     config.filters.forEach(filt => {
         filt = filt.toLowerCase();
-        words = filt.split(" ");
+        var words = filt.split(" ");
         if (words.length == 1) {
             if (filt[0] == 'l')
                 filt = "lap";
@@ -269,19 +270,18 @@ Transient.prototype.setupUI = function () {
         sigma = sigma / 1000;
         renderer.setSigma(sigma);
     })
-    sigmaSlider.setValue(20);
+    sigmaSlider.setValue(30);
 
     var wlSlider = new tui.Slider("wl-slider", 1, 20, true, function (wl) {
         this.setLabel(`Wavelength: ${wl} cm`);
         wl = wl / 100;
         renderer.setWavelength(wl);
     });
-    wlSlider.setValue(2);
+    wlSlider.setValue(3);
 
     new tui.ButtonGroup("magnitude-selector", false, config.magnitudes, function (idx) {
         var usePhase = Boolean(idx);
         renderer.setUsePhase(usePhase);
-        // var visibility = (usePhase) ? 'hidden' : 'visible';
         var display = (usePhase) ? 'none' : 'block';
         if (usePhase) {
             renderer.setToneMapper('none');
@@ -291,24 +291,28 @@ Transient.prototype.setupUI = function () {
         document.getElementById("tonemap-div").style.display = display;
     });
 
-    new tui.ButtonGroup("geometry-visibility-selector", false, ['Hide', 'Show'], function (idx) {
+    var geomVisSelector = new tui.ButtonGroup("geometry-visibility-selector", false, ['Hide', 'Show'], function (idx) {
         var showGeometry = Boolean(idx);
         renderer.setShowGeometry(showGeometry);
     });
 
     document.getElementById("filter-parameter").style.display = 'none';
+    document.getElementById("magnitude-div").style.visibility = 'hidden';
 
-    (new tui.ButtonGroup("filter-selector", true, config.filters, function (idx) {
+    var filterSelector = new tui.ButtonGroup("filter-selector", true, config.filters, function (idx) {
         renderer.setFilterType(filterTypes[idx]);
         if (idx < 3) {
             document.getElementById("filter-parameter").style.display = 'none';
-            document.getElementById("conventional-addition").style.display = 'none';
+            document.getElementById("magnitude-div").style.visibility = 'hidden';
+            // document.getElementById("conventional-addition").style.visibility = 'hidden';
         } else {
             document.getElementById("filter-parameter").style.display = 'block';
-            document.getElementById("conventional-addition").style.display = (renderer.isConvCamera) ? 'block' : 'none';
+            document.getElementById("magnitude-div").style.visibility = 'visible';
+            // document.getElementById("conventional-addition").style.visibility = (renderer.isConvCamera) ? 'visible' : 'hidden';
             wlSlider.show(filterTypes[idx] === 'pf');
         }
-    })).select(3);
+    })
+    filterSelector.select(3);
 
     for (var i = 0; i < config.reconstruction_resolutions.length; ++i)
         config.resolution_labels.push(parseInt(config.reconstruction_resolutions[i] * renderer.aspect) + "x" + config.reconstruction_resolutions[i]);
@@ -317,8 +321,8 @@ Transient.prototype.setupUI = function () {
         var height = config.reconstruction_resolutions[idx];
         renderer.changeReconstructionResolution(height);
     });
-    recResolutionSelector.select(2);
-    new tui.ButtonGroup("capture-selector", true, config.capture_methods, function (idx) {
+    recResolutionSelector.select(4);
+    var captureSelector = new tui.ButtonGroup("capture-selector", true, config.capture_methods, function (idx) {
         var isConf = Boolean(idx);
         renderer.setConfocal(isConf);
         if (isConf)
@@ -340,10 +344,10 @@ Transient.prototype.setupUI = function () {
     }
 
 
-    new tui.ButtonGroup("addition-selector", false, config.addition_modes, function (idx) {
-        renderer.setAddModules(!idx);
-    });
-    new tui.ButtonGroup("camera-selector", true, config.camera_models, function (idx) {
+    // new tui.ButtonGroup("addition-selector", false, config.addition_modes, function (idx) {
+    //     renderer.setAddModules(!idx);
+    // });
+    var camSelector = new tui.ButtonGroup("camera-selector", true, config.camera_models, function (idx) {
         var prev = renderer.isConvCamera;
         renderer.setCameraModel(idx);
 
@@ -354,7 +358,7 @@ Transient.prototype.setupUI = function () {
 
             if (prev) {
                 // Show Amplitude/Phase selector
-                document.getElementById("magnitude-div").style.display = 'block';
+                document.getElementById("magnitude-div").style.visibility = 'visible';
 
                 // Hide tone mapper selector if showing phase
                 var display = (usePhase) ? 'none' : 'block';
@@ -366,10 +370,10 @@ Transient.prototype.setupUI = function () {
                 document.getElementById("tonemap-div").style.display = display;
 
                 // Hide Module/Complex addition selector
-                document.getElementById("conventional-addition").style.display = 'none';
+                // document.getElementById("conventional-addition").style.visibility = 'hidden';
             } else if (current) {
                 // Hide Amplitude/Phase selector
-                document.getElementById("magnitude-div").style.display = 'none';
+                document.getElementById("magnitude-div").style.visibility = 'hidden';
 
                 // Show tone mapper selector if previously showing phase
                 if (usePhase) {
@@ -378,17 +382,17 @@ Transient.prototype.setupUI = function () {
                 }
 
                 // Show Module/Complex addition selector
-                document.getElementById("conventional-addition").style.display = 'block';
+                // document.getElementById("conventional-addition").style.visibility = 'visible';
             }
         }
     });
     var tonemapSelector = new tui.ButtonGroup("tonemap-selector", true, config.tone_mapper_labels, function (idx) {
         renderer.setToneMapper(config.tone_mapper_ids[idx]);
     });
-    var spadNumberSelector = new tui.ButtonGroup("spad-selector", false, config.spad_num, function (idx) {
+    var nSpadSelector = new tui.ButtonGroup("spad-selector", false, config.spad_num, function (idx) {
         renderer.changeSpadResolution(config.spad_num[idx]);
     });
-    spadNumberSelector.select(2);
+    nSpadSelector.select(2);
 
     var spadPositionsSlider = document.getElementById("spad-positions-selector");
     noUiSlider.create(spadPositionsSlider, {
@@ -423,11 +427,6 @@ Transient.prototype.setupUI = function () {
 
     var mouseListener = new tui.MouseListener(canvas, renderer.setEmitterPos.bind(renderer));
 
-    // var bounceSlider = new tui.Slider("path-length", 1, 20, true, function (length) {
-    //     this.setLabel((length - 1) + " light bounces");
-    //     renderer.setMaxPathLength(length);
-    // });
-    // bounceSlider.setValue(12);
     var bounceSlider = document.getElementById("path-length");
     noUiSlider.create(bounceSlider, {
         start: [3, 12],
@@ -442,16 +441,16 @@ Transient.prototype.setupUI = function () {
     bounceSlider.label.className = "slider-label";
     var parent = bounceSlider.parentNode;
     parent.insertBefore(bounceSlider.label, bounceSlider.nextSibling);
-    bounceSlider.label.textContent = "11 light bounces, capturing from bounce 3";
+    bounceSlider.label.textContent = "Capturing from bounce 3, up to 9 light bounces";
     bounceSlider.noUiSlider.on('update', function (values) {
         var low = parseFloat(values[0]);
         var length = parseFloat(values[1]);
-        bounceSlider.label.textContent = (length - 1) + " light bounces, capturing from bounce " + low;
+        bounceSlider.label.textContent = "Capturing from bounce " + low + ", up to " + (length - 1) + " light bounces";
         renderer.setMaxPathLength(length);
         renderer.setMinPathLength(low);
     })
 
-    var sampleSlider = new tui.Slider("sample-count", 400, 700, true, function (exponent100) {
+    var sampleSlider = new tui.Slider("sample-count", 400, 850, true, function (exponent100) {
         var sampleCount = Math.floor(Math.pow(10, exponent100 * 0.01));
         this.setLabel(sampleCount + " light paths");
         renderer.setMaxSampleCount(sampleCount);
@@ -523,10 +522,10 @@ Transient.prototype.setupUI = function () {
     });
     typeSelector.select(0);
 
-    this.wallMatType = genScene.MaterialType.Diffuse;
+    this.wallMatType = sceneData.MaterialType.Diffuse;
     var wallMatType = this.wallMatType;
     var wallTypeSelector = new tui.ButtonGroup("rwall-mat-types", true, ["Diffuse", "RoughMirror"], function (idx) {
-        wallMatType = (idx == 0) ? genScene.MaterialType.Diffuse : genScene.MaterialType.RoughMirror;
+        wallMatType = (idx == 0) ? sceneData.MaterialType.Diffuse : sceneData.MaterialType.RoughMirror;
     })
     wallTypeSelector.select(0);
 
@@ -537,29 +536,20 @@ Transient.prototype.setupUI = function () {
         this.value = nFeatures;
     }
     var nFeatures = new NumFeatures(1);
+    var typeOfScene = 0; // 0 - Single segment/Box
+                         // 1 - Predefined scene modified
+                         // 2 - Imported from JSON
     var featureSizeSlider = new tui.Slider("feature-size", 1, 250, true, function (nf) {
         nFeatures.setNFeatures(251 - nf);
         var d;
-        if (usingModifiedScene) {
-            if (modSceneSelector.selectedButton < 4) {
-                // Line, Box, Visibility test, and Virtual mirror
-                d = 0.4;
-            } else if (modSceneSelector.selectedButton == 4) {
-                // Rotated segment
-                d = Math.sqrt(0.17);
-            } else if (modSceneSelector.selectedButton == 5) {
-                // Two boxes
-                d = 0.5;
-            } else {
-                // Triangle
-                d = Math.sqrt(0.2);
-            }
-        } else {
+        if (typeOfScene == 1) {
+            d = sceneData.getSceneGeometryLength(modSceneSelector.selectedButton);
+        } else if (typeOfScene == 0) {
             var x1 = getCoordinate("x1");
             var x2 = getCoordinate("x2");
             var y1 = getCoordinate("y1");
             var y2 = getCoordinate("y2");
-            d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+            d = sceneData.getSegmentLength([x1, y1], [x2, y2]);
         }
         this.setLabel((d * 100 / (251 - nf)).toFixed(4) + " cm");
     });
@@ -568,29 +558,18 @@ Transient.prototype.setupUI = function () {
     document.getElementById("x2").onchange = function () { updateFeatureSize() };
     document.getElementById("y1").onchange = function () { updateFeatureSize() };
     document.getElementById("y2").onchange = function () { updateFeatureSize() };
+
     function updateFeatureSize(sceneIdx = -1) {
-        if (usingModifiedScene) {
+        if (typeOfScene == 1) {
             var d;
             var selectedScene = (sceneIdx == -1) ? modSceneSelector.selectedButton : sceneIdx;
-            if (selectedScene < 4) {
-                // Line, Box, Visibility test, and Virtual mirror
-                d = 0.4;
-            } else if (selectedScene == 4) {
-                // Rotated segment
-                d = Math.sqrt(0.17);
-            } else if (modSceneSelector.selectedButton == 5) {
-                // Two boxes
-                d = 0.5;
-            } else {
-                // Triangle
-                d = Math.sqrt(0.2);
-            }
-        } else {
+            d = sceneData.getSceneGeometryLength(selectedScene);
+        } else if (typeOfScene == 0) {
             var x1 = getCoordinate("x1");
             var x2 = getCoordinate("x2");
             var y1 = getCoordinate("y1");
             var y2 = getCoordinate("y2");
-            d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+            d = sceneData.getSegmentLength([x1, y1], [x2, y2]);
         }
         var nf = 251 - featureSizeSlider.value;
         featureSizeSlider.setLabel((d * 100 / nf).toFixed(4) + " cm");
@@ -612,111 +591,168 @@ Transient.prototype.setupUI = function () {
 
     document.getElementById("segment-div").style.display = 'block';
     document.getElementById("scene-div").style.display = 'none';
-    var usingModifiedScene = false;
-    new tui.ButtonGroup("type-of-scene", true, ["Single segment/Box", "Predefined scene"], function (idx) {
+    document.getElementById("import-div").style.display = 'none';
+
+    new tui.ButtonGroup("type-of-scene", true, ["Single segment/Box", "Predefined scene", "Import from JSON file"], function (idx) {
+        typeOfScene = idx;
         if (idx == 0) {
             document.getElementById("segment-div").style.display = 'block';
             document.getElementById("scene-div").style.display = 'none';
-            usingModifiedScene = false;
-        } else {
+            document.getElementById("import-div").style.display = 'none';
+
+            customSceneDivs = document.getElementsByClassName("custom-scene");
+            for (var i = 0; i < customSceneDivs.length; i++)
+                customSceneDivs[i].style.display = 'block';
+        } else if (idx == 1) {
             document.getElementById("segment-div").style.display = 'none';
             document.getElementById("scene-div").style.display = 'block';
-            usingModifiedScene = true;
+            document.getElementById("import-div").style.display = 'none';
+
+            customSceneDivs = document.getElementsByClassName("custom-scene");
+            for (var i = 0; i < customSceneDivs.length; i++)
+                customSceneDivs[i].style.display = 'block';
+        } else {
+            document.getElementById("segment-div").style.display = 'none';
+            document.getElementById("scene-div").style.display = 'none';
+            document.getElementById("import-div").style.display = 'block';
+            
+            customSceneDivs = document.getElementsByClassName("custom-scene");
+            for (var i = 0; i < customSceneDivs.length; i++)
+                customSceneDivs[i].style.display = 'none';
         }
         updateFeatureSize();
     });
 
-    sceneNames = [];
+    modSceneNames = [];
     for (var i = 0; i < config.scenes.length; ++i) {
-        if ((i != 1 && i != 5 && i < 7) || (i >= 9)) {
-            sceneNames.push(config.scenes[i].name);
+        if (i != 1 && i < 7) {
+            modSceneNames.push(config.scenes[i].name);
         }
     }
-    var modSceneSelector = new tui.ButtonGroup("mod-scene-selector", true, sceneNames, function (idx) {
+    var modSceneSelector = new tui.ButtonGroup("mod-scene-selector", true, modSceneNames, function (idx) {
         updateFeatureSize(idx);
     });
 
     document.getElementById('create-button').addEventListener('click', (function () {
         var verticesList = [];
-        if (usingModifiedScene) {
-            var endVertices = config.vertices[modSceneSelector.selectedButton];
-            if (modSceneSelector.selectedButton == 1) {
-                // Box
-                verticesList.push(generator.generateVertices([endVertices[0], endVertices[1]],
-                    [endVertices[2], endVertices[3]], nFeatures.value));
+        var hiddenBox = null;
 
-                var v1 = [verticesList[0][0], verticesList[0][1]];
-                var v2 = [verticesList[0][verticesList[0].length - 2], verticesList[0][verticesList[0].length - 1]];
-                var listAux = generator.generateVertices([endVertices[8], endVertices[9]],
-                    [endVertices[10], endVertices[11]], nFeatures.value);
-                v2.push(listAux[0], listAux[1]);
-                v1 = [listAux[listAux.length - 2], listAux[listAux.length - 1], v1[0], v1[1]];
-                verticesList.push(v2, listAux, v1);
-            } else {
-                for (var i = 0; i < endVertices.length; i += 4) {
-                    verticesList.push(generator.generateVertices([endVertices[i], endVertices[i + 1]],
-                        [endVertices[i + 2], endVertices[i + 3]], nFeatures.value));
-                }
+        if (typeOfScene == 2) {
+            // Read data from imported scene file
+            var files = document.getElementById('selectFiles').files;
+            if (files.length <= 0) {
+                alert('No file uploaded');
+                return false;
             }
-        } else {
+
+            files[0].text().then(function (text) {
+                var data = new sceneData.SceneData(text, config, sceneNames, modSceneNames);
+
+                if (data.typeOfScene == sceneData.LoadedSceneType.Default) {
+                    if (data.sceneIdx == -1) return;
+
+                    // Close the modal and change the scene
+                    modal.style.display = "none";
+                    showSliderHandles();
+                    sceneSelector.select(data.sceneIdx);
+
+                    // Capture parameters
+                    data.applyCaptureParameters(sampleSlider, captureSelector, nSpadSelector, spadPositionsSlider, deltaTSlider, tmaxSlider, bounceSlider);
+
+                    // Emitter parameters
+                    data.applyEmitterParameters(spreadSelector, renderer);
+
+                    // Show geometry over the scene
+                    geomVisSelector.select(data.geometryVisibilityIdx);
+
+                    // Reconstruction parameters
+                    data.applyReconstructionParameters(filterSelector, wlSlider, sigmaSlider, recResolutionSelector, camSelector, instantSlider, renderer.filterType);
+
+                    return;
+                } else if (data.typeOfScene == sceneData.LoadedSceneType.ModifiedDefault) {
+                    if (data.baseSceneIdx == -1) return;
+
+                    verticesList = generator.generateVertexListForModifiedScene(data.baseSceneIdx, config.vertices[data.baseSceneIdx], data.nFeatures);
+                } else if (data.typeOfScene == sceneData.LoadedSceneType.Custom) {
+                    verticesList = generator.generateVertexListForCustomScene(data.v1, data.v2, data.boxWidth, data.nFeatures);
+                    hiddenBox = {
+                        x1: data.v1[0],
+                        x2: data.v2[0],
+                        y1: data.v1[1],
+                        y2: data.v2[1],
+                        width: data.boxWidth
+                    };
+                } else {
+                    alert('Unsupported format');
+                    return;
+                }
+
+                // Create the new scene and close modal
+                var hiddenMaterial = {
+                    matType: data.hiddenMat,
+                    roughness: data.hiddenRoughness,
+                    albedo: 0.5,
+                    ior: data.hiddenIor,
+                };
+                var wallMaterial = {
+                    matType: data.wallMat,
+                    roughness: data.wallRoughness,
+                    albedo: 0.5,
+                };
+                generator.generateAndAddScene(renderer, config, sceneSelector, verticesList, hiddenMaterial, wallMaterial, data.featureSize, data.name, hiddenBox);
+        
+                modal.style.display = "none";
+                showSliderHandles();
+                sceneSelector.select(config.scenes.length - 1);
+
+                // Capture parameters
+                data.applyCaptureParameters(sampleSlider, captureSelector, nSpadSelector, spadPositionsSlider, deltaTSlider, tmaxSlider, bounceSlider);
+
+                // Emitter parameters
+                data.applyEmitterParameters(spreadSelector, renderer);
+
+                // Show geometry over the scene
+                geomVisSelector.select(data.geometryVisibilityIdx);
+
+                // Reconstruction parameters
+                data.applyReconstructionParameters(filterSelector, wlSlider, sigmaSlider, recResolutionSelector, camSelector, instantSlider, renderer.filterType);
+            })
+
+        } else if (typeOfScene == 1) {
+            verticesList = generator.generateVertexListForModifiedScene(modSceneSelector.selectedButton, config.vertices[modSceneSelector.selectedButton], nFeatures.value);
+        } else if (typeOfScene == 0) {
             var x1 = getCoordinate("x1");
             var x2 = getCoordinate("x2");
             var y1 = getCoordinate("y1");
             var y2 = getCoordinate("y2");
             var boxWidth = getCoordinate("box-width");
-            if (boxWidth <= 1e-5) {
-                // Use a segment
-                verticesList = [generator.generateVertices([x1, y1], [x2, y2], nFeatures.value)];
-            } else {
-                // Use a box
-                var vertices = closeBox(x1, y1, x2, y2, boxWidth);
-                verticesList.push(generator.generateVertices([x1, y1], [x2, y2], nFeatures.value));
-                var v1 = [verticesList[0][0], verticesList[0][1]];
-                var v2 = [verticesList[0][verticesList[0].length - 2], verticesList[0][verticesList[0].length - 1]];
-                var listAux = generator.generateVertices([vertices[4], vertices[5]],
-                    [vertices[6], vertices[7]], nFeatures.value);
-                v2.push(listAux[0], listAux[1]);
-                v1 = [listAux[listAux.length - 2], listAux[listAux.length - 1], v1[0], v1[1]];
-                verticesList.push(v2, listAux, v1);
-            }
+            verticesList = generator.generateVertexListForCustomScene([x1, y1], [x2, y2], boxWidth, nFeatures.value);
+            hiddenBox = {
+                x1: x1,
+                x2: x2,
+                y1: y1,
+                y2: y2,
+                width: boxWidth
+            };
+        } else {
+            alert('Invalid scene type');
+            return;
         }
-        var vertices = [];
-        verticesList.forEach(vertexList => {
-            vertices = vertices.concat(vertexList);
-        });
-        var matParams = [];
-        if (matType === genScene.MaterialType.RoughMirror || matType === genScene.MaterialType.RoughDielectric) {
-            matParams.push(roughness);
-        } else if (matType === genScene.MaterialType.Diffuse) {
-            matParams.push(0.5);
-        }
-        if (matType === genScene.MaterialType.Dielectric || matType === genScene.MaterialType.RoughDielectric) {
-            var ior = getCoordinate("ior");
-            matParams.push(ior);
-        }
-        var wallMatParams = [0.5];
-        if (wallMatType === genScene.MaterialType.RoughMirror || wallMatType === genScene.MaterialType.RoughDielectric) {
-            wallMatParams = [wallRoughness];
-        }
-        var ids = generator.generate(verticesList, matType, matParams, wallMatType, wallMatParams);
-        config.scenes.push({
-            'shader': ids[0], 'name': 'Custom scene ' + ids[1], 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': wallMatType,
-            'modifications': {
-                'feature_size': featureSizeSlider.label.innerHTML,
-                'base_scene': (usingModifiedScene) ? sceneNames[modSceneSelector.selectedButton] : 'Custom',
-                'mat_type': matType,
-                'mat_params': matParams,
-                'wall_mat_type': wallMatType,
-                'wall_mat_params': wallMatParams,
-                'x1': x1,
-                'x2': x2,
-                'y1': y1,
-                'y2': y2,
-                'width': boxWidth
-            }
-        });
-        sceneSelector.addButton(config.scenes[config.scenes.length - 1].name);
-        renderer.addScene(ids[0], verticesList);
+
+        var hiddenMaterial = {
+            matType: matType,
+            roughness: roughness,
+            albedo: 0.5,
+            ior: getCoordinate("ior"),
+        };
+        var wallMaterial = {
+            matType: wallMatType,
+            roughness: wallRoughness,
+            albedo: 0.5,
+        };
+        if (typeOfScene != 2)
+            generator.generateAndAddScene(renderer, config, sceneSelector, verticesList, hiddenMaterial, wallMaterial, featureSizeSlider.label.innerHTML, (typeOfScene == 1) ? modSceneNames[modSceneSelector.selectedButton] : 'Custom', hiddenBox);
+
         modal.style.display = "none";
         showSliderHandles();
         sceneSelector.select(config.scenes.length - 1);
@@ -744,7 +780,7 @@ Transient.prototype.setupUI = function () {
     this.overlay.className = "render-help";
     this.overlay.offsetHeight; /* Flush CSS changes */
     this.overlay.className += " render-help-transition";
-    this.overlay.textContent = "Click and drag!"
+    this.overlay.innerHTML = '<p style="margin: 20px">Click and drag to move and orient the light source</p>';
     this.overlay.addEventListener("mousedown", function (event) {
         this.parentNode.removeChild(this);
         mouseListener.mouseDown(event);
@@ -763,7 +799,7 @@ function isMobile() {
 }
 
 Transient.prototype.fail = function (message) {
-    var text = (isMobile()) ? "Save the link and connect from a computer, it doesn't run on most mobile devices" : "The demo is not working";
+    var text = (isMobile()) ? "Save the link and connect from a computer, it won't run on most mobile devices" : "The demo is not working";
     var sorryP = document.createElement("p");
     sorryP.appendChild(document.createTextNode(text));
     sorryP.style.fontSize = "50px";
@@ -784,9 +820,13 @@ Transient.prototype.fail = function (message) {
 Transient.prototype.renderLoop = function (timestamp) {
     window.requestAnimationFrame(this.boundRenderLoop);
 
-    if (!this.renderer.finished())
+    if (!this.renderer.finished()) {
         this.renderer.render(timestamp);
-    else if (this.changePlayState) {
+        this.progressBar.setProgress(this.renderer.progress());
+        this.progressBar.setLabel(Math.min(this.renderer.totalRaysTraced(), this.renderer.maxRayCount()) +
+            "/" + this.renderer.maxRayCount() + " rays traced; Progress: " +
+            this.progressBar.getProgressPercentage()+ "%; ETA: " + this.renderer.getETA().toFixed(3) + "s");
+    } else if (this.changePlayState) {
         this.playVideo = !this.playVideo;
         this.changePlayState = false;
         if (!this.playVideo)
@@ -820,7 +860,7 @@ Transient.prototype.renderLoop = function (timestamp) {
 
         var downloadFiles = async (fileName) => {
             this.saveParameters(fileName + ".json");
-            await new Promise(r => setTimeout(r, 1000)); // Avoid downloading only the second file but twice on Chrome
+            await new Promise(r => setTimeout(r, 1000)); // Avoid downloading only one file but multiple times on Chrome
             this.saveRaw(fileName + ".csv");
         }
         downloadFiles(fileName);
@@ -831,14 +871,7 @@ Transient.prototype.renderLoop = function (timestamp) {
 
         this.savedImages++;
         this.saveImageData = false;
-
-        // console.log(this.renderer.getTransientValues());
     }
-
-    this.progressBar.setProgress(this.renderer.progress());
-    this.progressBar.setLabel(Math.min(this.renderer.totalRaysTraced(), this.renderer.maxRayCount()) +
-        "/" + this.renderer.maxRayCount() + " rays traced; Progress: " +
-        this.progressBar.getProgressPercentage() + "%");
 }
 
 Transient.prototype.saveParameters = function (fileName) {
@@ -860,14 +893,14 @@ Transient.prototype.saveParameters = function (fileName) {
 `;
         }
         text += `\t"hidden_mat": "${config.material_types[modifications.mat_type - 2]}",\n`;
-        if (modifications.mat_type === genScene.MaterialType.RoughDielectric || modifications.mat_type === genScene.MaterialType.RoughMirror) {
+        if (modifications.mat_type === sceneData.MaterialType.RoughDielectric || modifications.mat_type === sceneData.MaterialType.RoughMirror) {
             text += `\t"hidden_roughness": ${modifications.mat_params[0]},\n`;
         }
-        if (modifications.mat_type === genScene.MaterialType.Dielectric || modifications.mat_type === genScene.MaterialType.RoughDielectric) {
+        if (modifications.mat_type === sceneData.MaterialType.Dielectric || modifications.mat_type === sceneData.MaterialType.RoughDielectric) {
             text += `\t"hidden_ior": ${modifications.mat_params[0]},\n`;
         }
         text += `\t"wall_mat": "${config.material_types[modifications.wall_mat_type - 2]}",\n`;
-        if (modifications.wall_mat_type === genScene.MaterialType.RoughDielectric || modifications.wall_mat_type === genScene.MaterialType.RoughMirror) {
+        if (modifications.wall_mat_type === sceneData.MaterialType.RoughDielectric || modifications.wall_mat_type === sceneData.MaterialType.RoughMirror) {
             text += `\t"wall_roughness": ${modifications.wall_mat_params[0]},\n`;
         }
         text += `\t"feature_size": "${modifications.feature_size}"\n`;
@@ -927,17 +960,6 @@ Transient.prototype.saveParameters = function (fileName) {
 
 Transient.prototype.saveRaw = function (fileName) {
     var values = this.renderer.getReconstructionValues();
-    // var arr = new Float32Array(values.length / 2);
-    // var k = 0;
-    // for (var j = 0; j < this.renderer.numPixels[1]; j++) {
-    //     for (var i = 0; i < this.renderer.numPixels[0]; i++) {
-    //         k = (this.renderer.numPixels[0] * j + i) * 4;
-    //         arr[k / 2] = values[k];
-    //         arr[k / 2 + 1] = values[k + 1];
-    //     }
-    // }
-    // hdf5.FS.writeFile(fileName + ".hdf5", arr.buffer);
-    // console.log(f);
 
     var text = ``;
     var k = 0;
