@@ -157,7 +157,7 @@ Transient.prototype.setupUI = function () {
             { 'shader': 'scene21', 'name': 'Two boxes', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             // { 'shader': 'scene22', 'name': 'Triangle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             { 'shader': 'scene24-bunny', 'name': 'Coarse bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
-            { 'shader': 'scene26-smooth-bunny', 'name': 'Smooth bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene26-smooth-bunny', 'name': 'Bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
         ],
         "capture_methods": ["Non-confocal", "Confocal"],
         "camera_models": ["Confocal", "Time-gated", "Steady-state"],
