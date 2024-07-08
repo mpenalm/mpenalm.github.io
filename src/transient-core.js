@@ -320,10 +320,10 @@
         this.sceneVBOs[i].init(4);
         vboData = new Float32Array(4 * 2);
         addRelayWallVertices(vboData, this.aspect);
-        vboData[4] = 0.5 / this.aspect;
-        vboData[5] = 0.2;
-        vboData[6] = 0.4 / this.aspect;
-        vboData[7] = -0.2;
+        vboData[4] = 0.5355 / this.aspect;
+        vboData[5] = 0.2349;
+        vboData[6] = 0.3645 / this.aspect;
+        vboData[7] = -0.2349;
         this.sceneVBOs[i].copy(vboData);
 
         // Second corner
@@ -406,25 +406,25 @@
         this.sceneVBOs[i].copy(vboData);
 
         // Triangle
-        i++;
-        this.sceneVBOs.push(new tgl.VertexBuffer());
-        this.sceneVBOs[i].addAttribute("Position", 2, this.gl.FLOAT, false);
-        this.sceneVBOs[i].init(8);
-        vboData = new Float32Array(8 * 2);
-        addRelayWallVertices(vboData, this.aspect);
-        vboData[4] = 0.0;
-        vboData[5] = 0.4;
-        vboData[6] = 0.2 / this.aspect;
-        vboData[7] = 0.0;
-        vboData[8] = 0.2 / this.aspect;
-        vboData[9] = 0.0;
-        vboData[10] = 0.0;
-        vboData[11] = -0.4;
-        vboData[12] = 0.0;
-        vboData[13] = -0.4;
-        vboData[14] = 0.0;
-        vboData[15] = 0.4;
-        this.sceneVBOs[i].copy(vboData);
+        // i++;
+        // this.sceneVBOs.push(new tgl.VertexBuffer());
+        // this.sceneVBOs[i].addAttribute("Position", 2, this.gl.FLOAT, false);
+        // this.sceneVBOs[i].init(8);
+        // vboData = new Float32Array(8 * 2);
+        // addRelayWallVertices(vboData, this.aspect);
+        // vboData[4] = 0.0;
+        // vboData[5] = 0.4;
+        // vboData[6] = 0.2 / this.aspect;
+        // vboData[7] = 0.0;
+        // vboData[8] = 0.2 / this.aspect;
+        // vboData[9] = 0.0;
+        // vboData[10] = 0.0;
+        // vboData[11] = -0.4;
+        // vboData[12] = 0.0;
+        // vboData[13] = -0.4;
+        // vboData[14] = 0.0;
+        // vboData[15] = 0.4;
+        // this.sceneVBOs[i].copy(vboData);
 
         // bunny_vertices.txt
         i++;
