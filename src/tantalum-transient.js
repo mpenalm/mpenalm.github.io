@@ -29,6 +29,16 @@ var Transient = function () {
     /* Ok, all seems well. Time to show the controls */
     this.controls.style.visibility = "visible";
 
+    this.timeElems = [];
+    this.timeElems['totalRender'] = document.getElementById("total-render-time");
+    this.timeElems['meanRender'] = document.getElementById("mean-render-time");
+    this.timeElems['stdRender'] = document.getElementById("std-render-time");
+    this.timeElems['totalRec'] = document.getElementById("total-rec-time");
+    this.timeElems['meanRec'] = document.getElementById("mean-rec-time");
+    this.timeElems['stdRec'] = document.getElementById("std-rec-time");
+    this.timeElems['meanFPS'] = document.getElementById("avg-render-fps");
+    this.timeElems['numFrames'] = document.getElementById("render-frames");
+
     window.requestAnimationFrame(this.boundRenderLoop);
 }
 
@@ -43,11 +53,16 @@ Transient.prototype.setupGL = function () {
     var floatLinExt = gl.getExtension("OES_texture_float_linear");
     var floatBufExt = gl.getExtension("WEBGL_color_buffer_float");
     var multiBufExt = gl.getExtension("WEBGL_draw_buffers");
+    var timerExt = gl.getExtension('EXT_disjoint_timer_query');
 
     if (!floatExt || !floatLinExt)
         throw new Error("Your platform does not support float textures");
     if (!multiBufExt)
         throw new Error("Your platform does not support the draw buffers extension");
+    if (!timerExt) {
+        alert("Your browser does not support the EXT_disjoint_timer_query extension, separate render and reconstruction times will not be shown.");
+        document.getElementById("latency-table").remove();
+    }
 
     tgl.init(gl, multiBufExt);
 
@@ -148,15 +163,15 @@ Transient.prototype.setupUI = function () {
             { 'shader': 'scene10', 'name': 'Line', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             { 'shader': 'scene9', 'name': 'Circle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             { 'shader': 'scene20', 'name': 'Box', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
-            { 'shader': 'scene11', 'name': 'Visibility test', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
-            { 'shader': 'scene14', 'name': 'Virtual mirror', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene11', 'name': 'Three segments', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            { 'shader': 'scene14', 'name': 'Infinity mirror', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             // { 'shader': 'scene16', 'name': 'Virtual mirror 2', 'posA': [0.64, 0.995], 'posB': [0.837, 0.75], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             { 'shader': 'scene15', 'name': 'Rotated segment', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             // { 'shader': 'scene18', 'name': 'Second corner', 'posA': [0.625, 0.9], 'posB': [0.837, 0.8], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             // { 'shader': 'scene19', 'name': 'Second corner target', 'posA': [0.625, 0.9], 'posB': [0.837, 0.8], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             { 'shader': 'scene21', 'name': 'Two boxes', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             // { 'shader': 'scene22', 'name': 'Triangle', 'posA': [0.5, 0.8], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
-            { 'shader': 'scene24-bunny', 'name': 'Coarse bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
+            // { 'shader': 'scene24-bunny', 'name': 'Coarse bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
             { 'shader': 'scene26-smooth-bunny', 'name': 'Bunny', 'posA': [0.767, 0.75], 'posB': [0.837, 0.5], 'spread': tcore.Renderer.SPREAD_LASER, 'wallMat': sceneData.MaterialType.Diffuse },
         ],
         "capture_methods": ["Non-confocal", "Confocal"],
@@ -175,7 +190,7 @@ Transient.prototype.setupUI = function () {
                 0.0, -0.2, -0.2, -0.2,
                 -0.2, -0.2, -0.2, 0.2,
                 -0.2, 0.2, 0.0, 0.2],
-            // Visibility test
+            // Three segments
             [0.0, 0.2, 0.0, -0.2,
                 0.2, 0.54641, 0.0, 0.2,
                 0.0, -0.2, -0.2, -0.54641],
@@ -479,9 +494,31 @@ Transient.prototype.setupUI = function () {
     deltaTSlider.setValue(3);
     tmaxSlider.setValue(3333);
 
+    document.getElementById('show-hide-latency').addEventListener('click', (function () {
+        latencyTable = document.getElementById('latency-table');
+        if (latencyTable) {
+            if (latencyTable.style.display == 'none') {
+                latencyTable.style.display = '';
+            } else {
+                latencyTable.style.display = 'none';
+            }
+        }
+        fpsTable = document.getElementById('fps-table');
+        if (fpsTable.style.display == 'none') {
+            fpsTable.style.display = '';
+        } else {
+            fpsTable.style.display = 'none';
+        }
+    }).bind(this));
+
     this.saveImageData = false;
     document.getElementById('save-button').addEventListener('click', (function () {
         this.saveImageData = true;
+    }).bind(this));
+
+    this.saveTransientData = false;
+    document.getElementById('save-transient-button').addEventListener('click', (function () {
+        this.saveTransientData = true;
     }).bind(this));
 
     this.playVideo = false;
@@ -489,6 +526,8 @@ Transient.prototype.setupUI = function () {
     document.getElementById('play-button').addEventListener('click', (function () {
         this.changePlayState = true;
     }).bind(this));
+
+    
 
     document.getElementById('add-button').addEventListener('click', (function () {
         modal.style.display = "block";
@@ -655,18 +694,18 @@ Transient.prototype.setupUI = function () {
                     modal.style.display = "none";
                     showSliderHandles();
                     sceneSelector.select(data.sceneIdx);
-
-                    // Capture parameters
-                    data.applyCaptureParameters(sampleSlider, captureSelector, nSpadSelector, spadPositionsSlider, deltaTSlider, tmaxSlider, bounceSlider);
-
+                    
                     // Emitter parameters
                     data.applyEmitterParameters(spreadSelector, renderer);
+
+                    // Capture parameters
+                    data.applyCaptureParameters(sampleSlider, captureSelector, nSpadSelector, spadPositionsSlider, deltaTSlider, tmaxSlider, bounceSlider, renderer);                    
 
                     // Show geometry over the scene
                     geomVisSelector.select(data.geometryVisibilityIdx);
 
                     // Reconstruction parameters
-                    data.applyReconstructionParameters(filterSelector, wlSlider, sigmaSlider, recResolutionSelector, camSelector, instantSlider, renderer.filterType);
+                    data.applyReconstructionParameters(filterSelector, wlSlider, sigmaSlider, recResolutionSelector, camSelector, instantSlider, filterTypes);
 
                     return;
                 } else if (data.typeOfScene == sceneData.LoadedSceneType.ModifiedDefault) {
@@ -699,14 +738,14 @@ Transient.prototype.setupUI = function () {
                     roughness: data.wallRoughness,
                     albedo: 0.5,
                 };
-                generator.generateAndAddScene(renderer, config, sceneSelector, verticesList, hiddenMaterial, wallMaterial, data.featureSize, data.name, hiddenBox);
+                generator.generateAndAddScene(renderer, config, sceneSelector, verticesList, hiddenMaterial, wallMaterial, data.featureSize, data.name, hiddenBox, data.spreadIdx, data.lightOrigin, data.lightLookAt);
         
                 modal.style.display = "none";
                 showSliderHandles();
                 sceneSelector.select(config.scenes.length - 1);
 
                 // Capture parameters
-                data.applyCaptureParameters(sampleSlider, captureSelector, nSpadSelector, spadPositionsSlider, deltaTSlider, tmaxSlider, bounceSlider);
+                data.applyCaptureParameters(sampleSlider, captureSelector, nSpadSelector, spadPositionsSlider, deltaTSlider, tmaxSlider, bounceSlider, renderer);
 
                 // Emitter parameters
                 data.applyEmitterParameters(spreadSelector, renderer);
@@ -715,7 +754,7 @@ Transient.prototype.setupUI = function () {
                 geomVisSelector.select(data.geometryVisibilityIdx);
 
                 // Reconstruction parameters
-                data.applyReconstructionParameters(filterSelector, wlSlider, sigmaSlider, recResolutionSelector, camSelector, instantSlider, renderer.filterType);
+                data.applyReconstructionParameters(filterSelector, wlSlider, sigmaSlider, recResolutionSelector, camSelector, instantSlider, filterTypes);
             })
 
         } else if (typeOfScene == 1) {
@@ -751,11 +790,12 @@ Transient.prototype.setupUI = function () {
             albedo: 0.5,
         };
         if (typeOfScene != 2)
-            generator.generateAndAddScene(renderer, config, sceneSelector, verticesList, hiddenMaterial, wallMaterial, featureSizeSlider.label.innerHTML, (typeOfScene == 1) ? modSceneNames[modSceneSelector.selectedButton] : 'Custom', hiddenBox);
+            generator.generateAndAddScene(renderer, config, sceneSelector, verticesList, hiddenMaterial, wallMaterial, featureSizeSlider.label.innerHTML, (typeOfScene == 1) ? modSceneNames[modSceneSelector.selectedButton] : 'Custom', hiddenBox, renderer.spreadType, renderer.laserPos, renderer.laserFocus);
 
         modal.style.display = "none";
         showSliderHandles();
-        sceneSelector.select(config.scenes.length - 1);
+        if (typeOfScene != 2)
+            sceneSelector.select(config.scenes.length - 1);
     }).bind(this));
 
     // Get the <span> element that closes the modal
@@ -820,6 +860,18 @@ Transient.prototype.fail = function (message) {
 Transient.prototype.renderLoop = function (timestamp) {
     window.requestAnimationFrame(this.boundRenderLoop);
 
+    // Display render and reconstruction time statistics
+    var renderTimes = this.renderer.getRenderTime();
+    var recTimes = this.renderer.getReconstructionTime();
+    this.timeElems['totalRender'].textContent = (renderTimes[0]) ? `${renderTimes[0].toFixed(1)} ms` : `Undefined`;
+    this.timeElems['meanRender'].textContent = (renderTimes[1]) ? `${renderTimes[1].toFixed(1)} ms` : `Undefined`;
+    this.timeElems['stdRender'].textContent = (renderTimes[2]) ? `${renderTimes[2].toFixed(1)} ms` : `Undefined`;
+    this.timeElems['totalRec'].textContent = (recTimes[0]) ? `${recTimes[0].toFixed(1)} ms` : `Undefined`;
+    this.timeElems['meanRec'].textContent = (recTimes[1]) ? `${recTimes[1].toFixed(1)} ms` : `Undefined`;
+    this.timeElems['stdRec'].textContent = (recTimes[2]) ? `${recTimes[2].toFixed(1)} ms` : `Undefined`;
+    this.timeElems['meanFPS'].textContent = `${renderTimes[3].toFixed(1)}`;
+    this.timeElems['numFrames'].textContent = `${renderTimes[4].toFixed(1)}`;
+
     if (!this.renderer.finished()) {
         this.renderer.render(timestamp);
         this.progressBar.setProgress(this.renderer.progress());
@@ -872,6 +924,15 @@ Transient.prototype.renderLoop = function (timestamp) {
         this.savedImages++;
         this.saveImageData = false;
     }
+
+    if (this.saveTransientData) {
+        var fileName = "Transient_signal";
+        if (this.savedImages > 0)
+            fileName += this.savedImages;
+        fileName += ".csv";
+        this.saveTransientWaveform(fileName);
+        this.saveTransientData = false;
+    }
 }
 
 Transient.prototype.saveParameters = function (fileName) {
@@ -916,6 +977,7 @@ Transient.prototype.saveParameters = function (fileName) {
     text += `
 "capture": {
     "method": "${config.capture_methods[Number(renderer.isConf)]}",
+    "origin": [${renderer.spadPos[0]}, ${renderer.spadPos[1]}],
     "num_spads": ${renderer.numSpads},
     "spad_boundaries": [${renderer.spadBoundaries[0]}, ${renderer.spadBoundaries[1]}],
     "delta_t": ${renderer.deltaT},
@@ -955,10 +1017,11 @@ Transient.prototype.saveParameters = function (fileName) {
 }`;
 
     var blob = new Blob([text], { type: "text/json;charset=utf-8" });
-    saveAs(blob, fileName);
+    saveAs(blob, fileName, true); // Avoid the BOM byte at the beginning
 }
 
 Transient.prototype.saveRaw = function (fileName) {
+    // Important: this function is saving the transposed reconstruction, and ending lines with commas, which makes python's numpy.loadtxt() break
     var values = this.renderer.getReconstructionValues();
 
     var text = ``;
@@ -978,5 +1041,22 @@ Transient.prototype.saveRaw = function (fileName) {
     }
 
     var blob = new Blob([text], { type: "text/csv;charset=utf-8" });
-    saveAs(blob, fileName);
+    saveAs(blob, fileName, true); // Avoid the BOM byte at the beginning
+}
+
+Transient.prototype.saveTransientWaveform = function (fileName) {
+    var values = this.renderer.getTransientValues();
+
+    var text = ``;
+    var k = 0;
+    for (var i = 0; i < this.renderer.numSpads; i++) {
+        for (var j = 0; j < this.renderer.numIntervals; j++) {
+            text += `${(j == 0) ? '' : ','}${values[k]}`;
+            k++;
+        }
+        text += `\n`;
+    }
+    
+    var blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+    saveAs(blob, fileName, true); // Avoid the BOM byte at the beginning
 }

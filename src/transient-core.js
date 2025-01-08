@@ -165,6 +165,17 @@
         this.addModules = true;
         this.showGeometry = false;
         this.createSceneVBOs();
+
+        this.timerExt = this.gl.getExtension('EXT_disjoint_timer_query');
+        if (this.timerExt) {
+            this.renderQueries = [];
+            this.nlosQueries = [];
+            this.renderMeasures = [];
+            this.nlosMeasures = [];
+        }
+
+        this.frameTimestamps = [];
+        this.totalFPS = 0;
     }
 
     Renderer.prototype.scene2canvas = function (pos) {
@@ -427,281 +438,281 @@
         // this.sceneVBOs[i].copy(vboData);
 
         // bunny_vertices.txt
-        i++;
-        this.sceneVBOs.push(new tgl.VertexBuffer());
-        this.sceneVBOs[i].addAttribute("Position", 2, this.gl.FLOAT, false);
-        this.sceneVBOs[i].init(136);
-        vboData = new Float32Array(136 * 2);
-        addRelayWallVertices(vboData, this.aspect);
-        vboData[4] = 0.61 / this.aspect;
-        vboData[5] = 0.08;
-        vboData[6] = 0.61 / this.aspect;
-        vboData[7] = 0.1;
-        vboData[8] = 0.61 / this.aspect;
-        vboData[9] = 0.1;
-        vboData[10] = 0.615 / this.aspect;
-        vboData[11] = 0.15;
-        vboData[12] = 0.615 / this.aspect;
-        vboData[13] = 0.15;
-        vboData[14] = 0.605 / this.aspect;
-        vboData[15] = 0.165;
-        vboData[16] = 0.605 / this.aspect;
-        vboData[17] = 0.165;
-        vboData[18] = 0.48 / this.aspect;
-        vboData[19] = 0.2;
-        vboData[20] = 0.48 / this.aspect;
-        vboData[21] = 0.2;
-        vboData[22] = 0.3999999999999999 / this.aspect;
-        vboData[23] = 0.25;
-        vboData[24] = 0.3999999999999999 / this.aspect;
-        vboData[25] = 0.25;
-        vboData[26] = 0.38 / this.aspect;
-        vboData[27] = 0.32;
-        vboData[28] = 0.38 / this.aspect;
-        vboData[29] = 0.32;
-        vboData[30] = 0.3899999999999999 / this.aspect;
-        vboData[31] = 0.36;
-        vboData[32] = 0.3899999999999999 / this.aspect;
-        vboData[33] = 0.36;
-        vboData[34] = 0.4099999999999999 / this.aspect;
-        vboData[35] = 0.37;
-        vboData[36] = 0.4099999999999999 / this.aspect;
-        vboData[37] = 0.37;
-        vboData[38] = 0.49 / this.aspect;
-        vboData[39] = 0.32;
-        vboData[40] = 0.49 / this.aspect;
-        vboData[41] = 0.32;
-        vboData[42] = 0.5499999999999999 / this.aspect;
-        vboData[43] = 0.3;
-        vboData[44] = 0.5499999999999999 / this.aspect;
-        vboData[45] = 0.3;
-        vboData[46] = 0.5299999999999999 / this.aspect;
-        vboData[47] = 0.32;
-        vboData[48] = 0.5299999999999999 / this.aspect;
-        vboData[49] = 0.32;
-        vboData[50] = 0.5199999999999999 / this.aspect;
-        vboData[51] = 0.35;
-        vboData[52] = 0.5199999999999999 / this.aspect;
-        vboData[53] = 0.35;
-        vboData[54] = 0.5299999999999999 / this.aspect;
-        vboData[55] = 0.39;
-        vboData[56] = 0.5299999999999999 / this.aspect;
-        vboData[57] = 0.39;
-        vboData[58] = 0.5499999999999999 / this.aspect;
-        vboData[59] = 0.4;
-        vboData[60] = 0.5499999999999999 / this.aspect;
-        vboData[61] = 0.4;
-        vboData[62] = 0.6 / this.aspect;
-        vboData[63] = 0.38;
-        vboData[64] = 0.6 / this.aspect;
-        vboData[65] = 0.38;
-        vboData[66] = 0.6599999999999999 / this.aspect;
-        vboData[67] = 0.3;
-        vboData[68] = 0.6599999999999999 / this.aspect;
-        vboData[69] = 0.3;
-        vboData[70] = 0.69 / this.aspect;
-        vboData[71] = 0.24;
-        vboData[72] = 0.69 / this.aspect;
-        vboData[73] = 0.24;
-        vboData[74] = 0.75 / this.aspect;
-        vboData[75] = 0.24;
-        vboData[76] = 0.75 / this.aspect;
-        vboData[77] = 0.24;
-        vboData[78] = 0.7999999999999999 / this.aspect;
-        vboData[79] = 0.22;
-        vboData[80] = 0.7999999999999999 / this.aspect;
-        vboData[81] = 0.22;
-        vboData[82] = 0.82 / this.aspect;
-        vboData[83] = 0.2;
-        vboData[84] = 0.82 / this.aspect;
-        vboData[85] = 0.2;
-        vboData[86] = 0.85 / this.aspect;
-        vboData[87] = 0.16;
-        vboData[88] = 0.85 / this.aspect;
-        vboData[89] = 0.16;
-        vboData[90] = 0.8699999999999999 / this.aspect;
-        vboData[91] = 0.125;
-        vboData[92] = 0.8699999999999999 / this.aspect;
-        vboData[93] = 0.125;
-        vboData[94] = 0.875 / this.aspect;
-        vboData[95] = 0.1;
-        vboData[96] = 0.875 / this.aspect;
-        vboData[97] = 0.1;
-        vboData[98] = 0.8699999999999999 / this.aspect;
-        vboData[99] = 0.08;
-        vboData[100] = 0.8699999999999999 / this.aspect;
-        vboData[101] = 0.08;
-        vboData[102] = 0.8799999999999999 / this.aspect;
-        vboData[103] = 0.06;
-        vboData[104] = 0.8799999999999999 / this.aspect;
-        vboData[105] = 0.06;
-        vboData[106] = 0.8699999999999999 / this.aspect;
-        vboData[107] = 0.04;
-        vboData[108] = 0.8699999999999999 / this.aspect;
-        vboData[109] = 0.04;
-        vboData[110] = 0.8599999999999999 / this.aspect;
-        vboData[111] = 0.02;
-        vboData[112] = 0.8599999999999999 / this.aspect;
-        vboData[113] = 0.02;
-        vboData[114] = 0.84 / this.aspect;
-        vboData[115] = 0.0;
-        vboData[116] = 0.84 / this.aspect;
-        vboData[117] = 0.0;
-        vboData[118] = 0.835 / this.aspect;
-        vboData[119] = -0.005;
-        vboData[120] = 0.835 / this.aspect;
-        vboData[121] = -0.005;
-        vboData[122] = 0.838 / this.aspect;
-        vboData[123] = -0.01;
-        vboData[124] = 0.838 / this.aspect;
-        vboData[125] = -0.01;
-        vboData[126] = 0.838 / this.aspect;
-        vboData[127] = -0.02;
-        vboData[128] = 0.838 / this.aspect;
-        vboData[129] = -0.02;
-        vboData[130] = 0.847 / this.aspect;
-        vboData[131] = -0.03;
-        vboData[132] = 0.847 / this.aspect;
-        vboData[133] = -0.03;
-        vboData[134] = 0.853 / this.aspect;
-        vboData[135] = -0.045;
-        vboData[136] = 0.853 / this.aspect;
-        vboData[137] = -0.045;
-        vboData[138] = 0.865 / this.aspect;
-        vboData[139] = -0.05;
-        vboData[140] = 0.865 / this.aspect;
-        vboData[141] = -0.05;
-        vboData[142] = 0.8699999999999999 / this.aspect;
-        vboData[143] = -0.06;
-        vboData[144] = 0.8699999999999999 / this.aspect;
-        vboData[145] = -0.06;
-        vboData[146] = 0.8799999999999999 / this.aspect;
-        vboData[147] = -0.07;
-        vboData[148] = 0.8799999999999999 / this.aspect;
-        vboData[149] = -0.07;
-        vboData[150] = 0.8899999999999999 / this.aspect;
-        vboData[151] = -0.087;
-        vboData[152] = 0.8899999999999999 / this.aspect;
-        vboData[153] = -0.087;
-        vboData[154] = 0.8919999999999999 / this.aspect;
-        vboData[155] = -0.1;
-        vboData[156] = 0.8919999999999999 / this.aspect;
-        vboData[157] = -0.1;
-        vboData[158] = 0.895 / this.aspect;
-        vboData[159] = -0.135;
-        vboData[160] = 0.895 / this.aspect;
-        vboData[161] = -0.135;
-        vboData[162] = 0.8979999999999999 / this.aspect;
-        vboData[163] = -0.137;
-        vboData[164] = 0.8979999999999999 / this.aspect;
-        vboData[165] = -0.137;
-        vboData[166] = 0.8979999999999999 / this.aspect;
-        vboData[167] = -0.15;
-        vboData[168] = 0.8979999999999999 / this.aspect;
-        vboData[169] = -0.15;
-        vboData[170] = 0.8999999999999999 / this.aspect;
-        vboData[171] = -0.17;
-        vboData[172] = 0.8999999999999999 / this.aspect;
-        vboData[173] = -0.17;
-        vboData[174] = 0.9019999999999999 / this.aspect;
-        vboData[175] = -0.18;
-        vboData[176] = 0.9019999999999999 / this.aspect;
-        vboData[177] = -0.18;
-        vboData[178] = 0.8999999999999999 / this.aspect;
-        vboData[179] = -0.186;
-        vboData[180] = 0.8999999999999999 / this.aspect;
-        vboData[181] = -0.186;
-        vboData[182] = 0.8979999999999999 / this.aspect;
-        vboData[183] = -0.192;
-        vboData[184] = 0.8979999999999999 / this.aspect;
-        vboData[185] = -0.192;
-        vboData[186] = 0.8899999999999999 / this.aspect;
-        vboData[187] = -0.21;
-        vboData[188] = 0.8899999999999999 / this.aspect;
-        vboData[189] = -0.21;
-        vboData[190] = 0.8899999999999999 / this.aspect;
-        vboData[191] = -0.22;
-        vboData[192] = 0.8899999999999999 / this.aspect;
-        vboData[193] = -0.22;
-        vboData[194] = 0.891 / this.aspect;
-        vboData[195] = -0.24;
-        vboData[196] = 0.891 / this.aspect;
-        vboData[197] = -0.24;
-        vboData[198] = 0.8799999999999999 / this.aspect;
-        vboData[199] = -0.265;
-        vboData[200] = 0.8799999999999999 / this.aspect;
-        vboData[201] = -0.265;
-        vboData[202] = 0.883 / this.aspect;
-        vboData[203] = -0.28;
-        vboData[204] = 0.883 / this.aspect;
-        vboData[205] = -0.28;
-        vboData[206] = 0.883 / this.aspect;
-        vboData[207] = -0.29;
-        vboData[208] = 0.883 / this.aspect;
-        vboData[209] = -0.29;
-        vboData[210] = 0.875 / this.aspect;
-        vboData[211] = -0.3;
-        vboData[212] = 0.875 / this.aspect;
-        vboData[213] = -0.3;
-        vboData[214] = 0.8599999999999999 / this.aspect;
-        vboData[215] = -0.32;
-        vboData[216] = 0.8599999999999999 / this.aspect;
-        vboData[217] = -0.32;
-        vboData[218] = 0.875 / this.aspect;
-        vboData[219] = -0.33;
-        vboData[220] = 0.875 / this.aspect;
-        vboData[221] = -0.33;
-        vboData[222] = 0.879 / this.aspect;
-        vboData[223] = -0.34;
-        vboData[224] = 0.879 / this.aspect;
-        vboData[225] = -0.34;
-        vboData[226] = 0.8799999999999999 / this.aspect;
-        vboData[227] = -0.35;
-        vboData[228] = 0.8799999999999999 / this.aspect;
-        vboData[229] = -0.35;
-        vboData[230] = 0.8799999999999999 / this.aspect;
-        vboData[231] = -0.375;
-        vboData[232] = 0.8799999999999999 / this.aspect;
-        vboData[233] = -0.375;
-        vboData[234] = 0.8779999999999999 / this.aspect;
-        vboData[235] = -0.38;
-        vboData[236] = 0.8779999999999999 / this.aspect;
-        vboData[237] = -0.38;
-        vboData[238] = 0.8739999999999999 / this.aspect;
-        vboData[239] = -0.38;
-        vboData[240] = 0.8739999999999999 / this.aspect;
-        vboData[241] = -0.38;
-        vboData[242] = 0.873 / this.aspect;
-        vboData[243] = -0.383;
-        vboData[244] = 0.873 / this.aspect;
-        vboData[245] = -0.383;
-        vboData[246] = 0.8599999999999999 / this.aspect;
-        vboData[247] = -0.387;
-        vboData[248] = 0.8599999999999999 / this.aspect;
-        vboData[249] = -0.387;
-        vboData[250] = 0.845 / this.aspect;
-        vboData[251] = -0.387;
-        vboData[252] = 0.845 / this.aspect;
-        vboData[253] = -0.387;
-        vboData[254] = 0.835 / this.aspect;
-        vboData[255] = -0.39;
-        vboData[256] = 0.835 / this.aspect;
-        vboData[257] = -0.39;
-        vboData[258] = 0.76 / this.aspect;
-        vboData[259] = -0.395;
-        vboData[260] = 0.76 / this.aspect;
-        vboData[261] = -0.395;
-        vboData[262] = 0.725 / this.aspect;
-        vboData[263] = -0.398;
-        vboData[264] = 0.725 / this.aspect;
-        vboData[265] = -0.398;
-        vboData[266] = 0.71 / this.aspect;
-        vboData[267] = -0.396;
-        vboData[268] = 0.71 / this.aspect;
-        vboData[269] = -0.396;
-        vboData[270] = 0.6399999999999999 / this.aspect;
-        vboData[271] = -0.398;
-        this.sceneVBOs[i].copy(vboData);
+        // i++;
+        // this.sceneVBOs.push(new tgl.VertexBuffer());
+        // this.sceneVBOs[i].addAttribute("Position", 2, this.gl.FLOAT, false);
+        // this.sceneVBOs[i].init(136);
+        // vboData = new Float32Array(136 * 2);
+        // addRelayWallVertices(vboData, this.aspect);
+        // vboData[4] = 0.61 / this.aspect;
+        // vboData[5] = 0.08;
+        // vboData[6] = 0.61 / this.aspect;
+        // vboData[7] = 0.1;
+        // vboData[8] = 0.61 / this.aspect;
+        // vboData[9] = 0.1;
+        // vboData[10] = 0.615 / this.aspect;
+        // vboData[11] = 0.15;
+        // vboData[12] = 0.615 / this.aspect;
+        // vboData[13] = 0.15;
+        // vboData[14] = 0.605 / this.aspect;
+        // vboData[15] = 0.165;
+        // vboData[16] = 0.605 / this.aspect;
+        // vboData[17] = 0.165;
+        // vboData[18] = 0.48 / this.aspect;
+        // vboData[19] = 0.2;
+        // vboData[20] = 0.48 / this.aspect;
+        // vboData[21] = 0.2;
+        // vboData[22] = 0.3999999999999999 / this.aspect;
+        // vboData[23] = 0.25;
+        // vboData[24] = 0.3999999999999999 / this.aspect;
+        // vboData[25] = 0.25;
+        // vboData[26] = 0.38 / this.aspect;
+        // vboData[27] = 0.32;
+        // vboData[28] = 0.38 / this.aspect;
+        // vboData[29] = 0.32;
+        // vboData[30] = 0.3899999999999999 / this.aspect;
+        // vboData[31] = 0.36;
+        // vboData[32] = 0.3899999999999999 / this.aspect;
+        // vboData[33] = 0.36;
+        // vboData[34] = 0.4099999999999999 / this.aspect;
+        // vboData[35] = 0.37;
+        // vboData[36] = 0.4099999999999999 / this.aspect;
+        // vboData[37] = 0.37;
+        // vboData[38] = 0.49 / this.aspect;
+        // vboData[39] = 0.32;
+        // vboData[40] = 0.49 / this.aspect;
+        // vboData[41] = 0.32;
+        // vboData[42] = 0.5499999999999999 / this.aspect;
+        // vboData[43] = 0.3;
+        // vboData[44] = 0.5499999999999999 / this.aspect;
+        // vboData[45] = 0.3;
+        // vboData[46] = 0.5299999999999999 / this.aspect;
+        // vboData[47] = 0.32;
+        // vboData[48] = 0.5299999999999999 / this.aspect;
+        // vboData[49] = 0.32;
+        // vboData[50] = 0.5199999999999999 / this.aspect;
+        // vboData[51] = 0.35;
+        // vboData[52] = 0.5199999999999999 / this.aspect;
+        // vboData[53] = 0.35;
+        // vboData[54] = 0.5299999999999999 / this.aspect;
+        // vboData[55] = 0.39;
+        // vboData[56] = 0.5299999999999999 / this.aspect;
+        // vboData[57] = 0.39;
+        // vboData[58] = 0.5499999999999999 / this.aspect;
+        // vboData[59] = 0.4;
+        // vboData[60] = 0.5499999999999999 / this.aspect;
+        // vboData[61] = 0.4;
+        // vboData[62] = 0.6 / this.aspect;
+        // vboData[63] = 0.38;
+        // vboData[64] = 0.6 / this.aspect;
+        // vboData[65] = 0.38;
+        // vboData[66] = 0.6599999999999999 / this.aspect;
+        // vboData[67] = 0.3;
+        // vboData[68] = 0.6599999999999999 / this.aspect;
+        // vboData[69] = 0.3;
+        // vboData[70] = 0.69 / this.aspect;
+        // vboData[71] = 0.24;
+        // vboData[72] = 0.69 / this.aspect;
+        // vboData[73] = 0.24;
+        // vboData[74] = 0.75 / this.aspect;
+        // vboData[75] = 0.24;
+        // vboData[76] = 0.75 / this.aspect;
+        // vboData[77] = 0.24;
+        // vboData[78] = 0.7999999999999999 / this.aspect;
+        // vboData[79] = 0.22;
+        // vboData[80] = 0.7999999999999999 / this.aspect;
+        // vboData[81] = 0.22;
+        // vboData[82] = 0.82 / this.aspect;
+        // vboData[83] = 0.2;
+        // vboData[84] = 0.82 / this.aspect;
+        // vboData[85] = 0.2;
+        // vboData[86] = 0.85 / this.aspect;
+        // vboData[87] = 0.16;
+        // vboData[88] = 0.85 / this.aspect;
+        // vboData[89] = 0.16;
+        // vboData[90] = 0.8699999999999999 / this.aspect;
+        // vboData[91] = 0.125;
+        // vboData[92] = 0.8699999999999999 / this.aspect;
+        // vboData[93] = 0.125;
+        // vboData[94] = 0.875 / this.aspect;
+        // vboData[95] = 0.1;
+        // vboData[96] = 0.875 / this.aspect;
+        // vboData[97] = 0.1;
+        // vboData[98] = 0.8699999999999999 / this.aspect;
+        // vboData[99] = 0.08;
+        // vboData[100] = 0.8699999999999999 / this.aspect;
+        // vboData[101] = 0.08;
+        // vboData[102] = 0.8799999999999999 / this.aspect;
+        // vboData[103] = 0.06;
+        // vboData[104] = 0.8799999999999999 / this.aspect;
+        // vboData[105] = 0.06;
+        // vboData[106] = 0.8699999999999999 / this.aspect;
+        // vboData[107] = 0.04;
+        // vboData[108] = 0.8699999999999999 / this.aspect;
+        // vboData[109] = 0.04;
+        // vboData[110] = 0.8599999999999999 / this.aspect;
+        // vboData[111] = 0.02;
+        // vboData[112] = 0.8599999999999999 / this.aspect;
+        // vboData[113] = 0.02;
+        // vboData[114] = 0.84 / this.aspect;
+        // vboData[115] = 0.0;
+        // vboData[116] = 0.84 / this.aspect;
+        // vboData[117] = 0.0;
+        // vboData[118] = 0.835 / this.aspect;
+        // vboData[119] = -0.005;
+        // vboData[120] = 0.835 / this.aspect;
+        // vboData[121] = -0.005;
+        // vboData[122] = 0.838 / this.aspect;
+        // vboData[123] = -0.01;
+        // vboData[124] = 0.838 / this.aspect;
+        // vboData[125] = -0.01;
+        // vboData[126] = 0.838 / this.aspect;
+        // vboData[127] = -0.02;
+        // vboData[128] = 0.838 / this.aspect;
+        // vboData[129] = -0.02;
+        // vboData[130] = 0.847 / this.aspect;
+        // vboData[131] = -0.03;
+        // vboData[132] = 0.847 / this.aspect;
+        // vboData[133] = -0.03;
+        // vboData[134] = 0.853 / this.aspect;
+        // vboData[135] = -0.045;
+        // vboData[136] = 0.853 / this.aspect;
+        // vboData[137] = -0.045;
+        // vboData[138] = 0.865 / this.aspect;
+        // vboData[139] = -0.05;
+        // vboData[140] = 0.865 / this.aspect;
+        // vboData[141] = -0.05;
+        // vboData[142] = 0.8699999999999999 / this.aspect;
+        // vboData[143] = -0.06;
+        // vboData[144] = 0.8699999999999999 / this.aspect;
+        // vboData[145] = -0.06;
+        // vboData[146] = 0.8799999999999999 / this.aspect;
+        // vboData[147] = -0.07;
+        // vboData[148] = 0.8799999999999999 / this.aspect;
+        // vboData[149] = -0.07;
+        // vboData[150] = 0.8899999999999999 / this.aspect;
+        // vboData[151] = -0.087;
+        // vboData[152] = 0.8899999999999999 / this.aspect;
+        // vboData[153] = -0.087;
+        // vboData[154] = 0.8919999999999999 / this.aspect;
+        // vboData[155] = -0.1;
+        // vboData[156] = 0.8919999999999999 / this.aspect;
+        // vboData[157] = -0.1;
+        // vboData[158] = 0.895 / this.aspect;
+        // vboData[159] = -0.135;
+        // vboData[160] = 0.895 / this.aspect;
+        // vboData[161] = -0.135;
+        // vboData[162] = 0.8979999999999999 / this.aspect;
+        // vboData[163] = -0.137;
+        // vboData[164] = 0.8979999999999999 / this.aspect;
+        // vboData[165] = -0.137;
+        // vboData[166] = 0.8979999999999999 / this.aspect;
+        // vboData[167] = -0.15;
+        // vboData[168] = 0.8979999999999999 / this.aspect;
+        // vboData[169] = -0.15;
+        // vboData[170] = 0.8999999999999999 / this.aspect;
+        // vboData[171] = -0.17;
+        // vboData[172] = 0.8999999999999999 / this.aspect;
+        // vboData[173] = -0.17;
+        // vboData[174] = 0.9019999999999999 / this.aspect;
+        // vboData[175] = -0.18;
+        // vboData[176] = 0.9019999999999999 / this.aspect;
+        // vboData[177] = -0.18;
+        // vboData[178] = 0.8999999999999999 / this.aspect;
+        // vboData[179] = -0.186;
+        // vboData[180] = 0.8999999999999999 / this.aspect;
+        // vboData[181] = -0.186;
+        // vboData[182] = 0.8979999999999999 / this.aspect;
+        // vboData[183] = -0.192;
+        // vboData[184] = 0.8979999999999999 / this.aspect;
+        // vboData[185] = -0.192;
+        // vboData[186] = 0.8899999999999999 / this.aspect;
+        // vboData[187] = -0.21;
+        // vboData[188] = 0.8899999999999999 / this.aspect;
+        // vboData[189] = -0.21;
+        // vboData[190] = 0.8899999999999999 / this.aspect;
+        // vboData[191] = -0.22;
+        // vboData[192] = 0.8899999999999999 / this.aspect;
+        // vboData[193] = -0.22;
+        // vboData[194] = 0.891 / this.aspect;
+        // vboData[195] = -0.24;
+        // vboData[196] = 0.891 / this.aspect;
+        // vboData[197] = -0.24;
+        // vboData[198] = 0.8799999999999999 / this.aspect;
+        // vboData[199] = -0.265;
+        // vboData[200] = 0.8799999999999999 / this.aspect;
+        // vboData[201] = -0.265;
+        // vboData[202] = 0.883 / this.aspect;
+        // vboData[203] = -0.28;
+        // vboData[204] = 0.883 / this.aspect;
+        // vboData[205] = -0.28;
+        // vboData[206] = 0.883 / this.aspect;
+        // vboData[207] = -0.29;
+        // vboData[208] = 0.883 / this.aspect;
+        // vboData[209] = -0.29;
+        // vboData[210] = 0.875 / this.aspect;
+        // vboData[211] = -0.3;
+        // vboData[212] = 0.875 / this.aspect;
+        // vboData[213] = -0.3;
+        // vboData[214] = 0.8599999999999999 / this.aspect;
+        // vboData[215] = -0.32;
+        // vboData[216] = 0.8599999999999999 / this.aspect;
+        // vboData[217] = -0.32;
+        // vboData[218] = 0.875 / this.aspect;
+        // vboData[219] = -0.33;
+        // vboData[220] = 0.875 / this.aspect;
+        // vboData[221] = -0.33;
+        // vboData[222] = 0.879 / this.aspect;
+        // vboData[223] = -0.34;
+        // vboData[224] = 0.879 / this.aspect;
+        // vboData[225] = -0.34;
+        // vboData[226] = 0.8799999999999999 / this.aspect;
+        // vboData[227] = -0.35;
+        // vboData[228] = 0.8799999999999999 / this.aspect;
+        // vboData[229] = -0.35;
+        // vboData[230] = 0.8799999999999999 / this.aspect;
+        // vboData[231] = -0.375;
+        // vboData[232] = 0.8799999999999999 / this.aspect;
+        // vboData[233] = -0.375;
+        // vboData[234] = 0.8779999999999999 / this.aspect;
+        // vboData[235] = -0.38;
+        // vboData[236] = 0.8779999999999999 / this.aspect;
+        // vboData[237] = -0.38;
+        // vboData[238] = 0.8739999999999999 / this.aspect;
+        // vboData[239] = -0.38;
+        // vboData[240] = 0.8739999999999999 / this.aspect;
+        // vboData[241] = -0.38;
+        // vboData[242] = 0.873 / this.aspect;
+        // vboData[243] = -0.383;
+        // vboData[244] = 0.873 / this.aspect;
+        // vboData[245] = -0.383;
+        // vboData[246] = 0.8599999999999999 / this.aspect;
+        // vboData[247] = -0.387;
+        // vboData[248] = 0.8599999999999999 / this.aspect;
+        // vboData[249] = -0.387;
+        // vboData[250] = 0.845 / this.aspect;
+        // vboData[251] = -0.387;
+        // vboData[252] = 0.845 / this.aspect;
+        // vboData[253] = -0.387;
+        // vboData[254] = 0.835 / this.aspect;
+        // vboData[255] = -0.39;
+        // vboData[256] = 0.835 / this.aspect;
+        // vboData[257] = -0.39;
+        // vboData[258] = 0.76 / this.aspect;
+        // vboData[259] = -0.395;
+        // vboData[260] = 0.76 / this.aspect;
+        // vboData[261] = -0.395;
+        // vboData[262] = 0.725 / this.aspect;
+        // vboData[263] = -0.398;
+        // vboData[264] = 0.725 / this.aspect;
+        // vboData[265] = -0.398;
+        // vboData[266] = 0.71 / this.aspect;
+        // vboData[267] = -0.396;
+        // vboData[268] = 0.71 / this.aspect;
+        // vboData[269] = -0.396;
+        // vboData[270] = 0.6399999999999999 / this.aspect;
+        // vboData[271] = -0.398;
+        // this.sceneVBOs[i].copy(vboData);
 
         // singleLineBunny.obj
         i++;
@@ -3876,6 +3887,22 @@
     Renderer.prototype.setCameraModel = function (id) {
         this.isVirtualConf = (id == 0);
         this.isConvCamera = (id == 2);
+        
+        // Clean previous camera model times to avoid mixing different models
+        if (this.nlosQueries) {
+            for (var i = this.nlosQueries.length-1; i >= 0; i--) {
+                var query = this.nlosQueries[i];
+                let available = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_AVAILABLE_EXT);
+                let disjoint = this.gl.getParameter(this.timerExt.GPU_DISJOINT_EXT);
+
+                if (available || disjoint) {
+                    // Clean up the query object.
+                    this.timerExt.deleteQueryEXT(query);
+                }
+                this.nlosQueries.pop();
+            }
+            this.nlosMeasures = [];
+        }
         if (this.finished())
             this.redraw();
     }
@@ -4057,7 +4084,7 @@
 
             var dist = Math.abs(this.spadHeights[1] - this.spadHeights[0]);
             if (this.spadRadius > dist / 2) {
-                this.spadRadius = dist / 2;
+                this.spadRadius = Math.max(1e-5, dist / 2);
             } else if (dist / 2 >= 0.0035) {
                 this.spadRadius = 0.0035;
             }
@@ -4239,6 +4266,23 @@
         if (this.numPixels === undefined || this.numPixels[1] != height) {
             this.numPixels = [parseInt(height * this.aspect), height];
             this.createNLOSBuffers(ModifiedAttributes.NumPixels);
+
+            // Clear previous reconstruction time measurements
+            if (this.nlosQueries) {
+                for (var i = this.nlosQueries.length-1; i >= 0; i--) {
+                    var query = this.nlosQueries[i];
+                    let available = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_AVAILABLE_EXT);
+                    let disjoint = this.gl.getParameter(this.timerExt.GPU_DISJOINT_EXT);
+    
+                    if (available || disjoint) {
+                        // Clean up the query object.
+                        this.timerExt.deleteQueryEXT(query);
+                    }
+                    this.nlosQueries.pop();
+                }
+                this.nlosMeasures = [];
+            }
+
             if (this.finished())
                 this.redraw();
         }
@@ -4264,7 +4308,11 @@
         var instant = (this.isConvCamera) ? 0 : this.instant;
         var n = (this.isConvCamera) ? this.numIntervals : 1;
 
-        var start = Date.now();
+        if (this.nlosQueries) {
+            var q = this.nlosQueries.length;
+            this.nlosQueries.push(this.timerExt.createQueryEXT());
+            this.timerExt.beginQueryEXT(this.timerExt.TIME_ELAPSED_EXT, this.nlosQueries[q]);
+        }
         for (var i = 0; i < n; i++) {
             if (this.isConf) {
                 // Confocal data
@@ -4303,8 +4351,7 @@
             }
             instant++;
         }
-        var finish = Date.now();
-        if (this.isConvCamera) console.log(`${finish - start} ms`);
+        if (this.nlosQueries) this.timerExt.endQueryEXT(this.timerExt.TIME_ELAPSED_EXT);
         gl.disable(gl.BLEND);
     }
 
@@ -4522,6 +4569,38 @@
         this.msPerFrame = 1000 / 100;
         this.currentCall = 0;
         this.nlosElapsedTimes = [];
+        this.frameTimestamps = [];
+        this.totalFPS = 0;
+
+        if (this.renderQueries) {
+            for (var i = this.renderQueries.length-1; i >= 0; i--) {
+                var query = this.renderQueries[i];
+                let available = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_AVAILABLE_EXT);
+                let disjoint = this.gl.getParameter(this.timerExt.GPU_DISJOINT_EXT);
+
+                if (available || disjoint) {
+                    // Clean up the query object.
+                    this.timerExt.deleteQueryEXT(query);
+                }
+                this.renderQueries.pop();
+            }
+            this.renderMeasures = [];
+        }
+        if (this.nlosQueries) {
+            for (var i = this.nlosQueries.length-1; i >= 0; i--) {
+                var query = this.nlosQueries[i];
+                let available = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_AVAILABLE_EXT);
+                let disjoint = this.gl.getParameter(this.timerExt.GPU_DISJOINT_EXT);
+
+                if (available || disjoint) {
+                    // Clean up the query object.
+                    this.timerExt.deleteQueryEXT(query);
+                }
+                this.nlosQueries.pop();
+            }
+            this.nlosMeasures = [];
+        }
+
         this.confCounter = 0;
         if (this.isConf) {
             this.laserGrid = [this.spadPoints[0], this.spadPoints[1]];
@@ -4854,9 +4933,15 @@
     Renderer.prototype.render = function (timestamp) {
         this.needsReset = true;
         this.elapsedTimes.push(timestamp);
+        this.frameTimestamps.push(timestamp * 1e-3);
         if (this.nlosElapsedTimes.length == 0) {
             this.nlosElapsedTimes.push(timestamp);
         }
+
+        var n = this.frameTimestamps.length - 1;
+        var deltaTime = this.frameTimestamps[n] - ((n > 0) ? this.frameTimestamps[n-1] : 0);
+        var fps = 1 / deltaTime;
+        this.totalFPS += fps;
 
         var current = this.currentState;
         var next = 1 - current;
@@ -4870,6 +4955,12 @@
         this.fbo.drawBuffers(4);
         this.rayStates[next].attach(this.fbo);
         this.quadVbo.bind();
+
+        if (this.renderQueries) {
+            var q = this.renderQueries.length;
+            this.renderQueries.push(this.timerExt.createQueryEXT());
+            this.timerExt.beginQueryEXT(this.timerExt.TIME_ELAPSED_EXT, this.renderQueries[q]);
+        }
 
         if (this.pathLength == 0) {
             this.initProgram.bind();
@@ -4973,6 +5064,7 @@
                 this.elapsedTimes = [];
             }
         }
+        if (this.renderQueries) this.timerExt.endQueryEXT(this.timerExt.TIME_ELAPSED_EXT);
 
         gl.disable(gl.BLEND);
 
@@ -5159,6 +5251,96 @@
             result.push(h[i]);
         }
         return result;
+    }
+
+    Renderer.prototype.getRenderTime = function () {
+        if (this.renderQueries) { // Check separate time only if the timer extension is available
+            var i = 0;
+            while (i < this.renderQueries.length) {
+                query = this.renderQueries[i];
+                if (query) {
+                    let available = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_AVAILABLE_EXT);
+                    let disjoint = this.gl.getParameter(this.timerExt.GPU_DISJOINT_EXT);
+                    if (available && !disjoint) {
+                        // See how much time the rendering of the object took in nanoseconds.
+                        let timeElapsed = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_EXT);
+                        this.renderMeasures.push(timeElapsed);
+                        
+                        // Clean up the query object.
+                        this.timerExt.deleteQueryEXT(query);
+
+                        this.renderQueries.splice(i, 1);
+                    } else {
+                        // console.log('Unable to read a query, exiting loop');
+                        i++;
+                        // console.log(`unable to read the query: ${i}`);
+                    }
+                }
+            }
+
+            var mean = 0;
+            var std = 0;
+            var total = 0;
+            var n = this.renderMeasures.length;
+            this.renderMeasures.forEach(x => {
+                mean += x;
+                total += x;
+            });
+            if (n > 0) mean /= n;
+            if (n < 2) std = undefined;
+            else {
+                for (var i = 0; i < n; i++) std += (this.renderMeasures[i] - mean) * (this.renderMeasures[i] - mean);
+                std = 1e-6 * Math.sqrt(std / (n - 1));
+            }
+        }
+        var numFrames = this.frameTimestamps.length;
+        var meanFPS = this.totalFPS / numFrames;
+        return [1e-6 * total, 1e-6 * mean, std, meanFPS, numFrames];
+    }
+
+    Renderer.prototype.getReconstructionTime = function () {
+        if (this.nlosQueries) { // Check separate time only if the timer extension is available
+            var i = 0;
+            while (i < this.nlosQueries.length) {
+                query = this.nlosQueries[i];
+                if (query) {
+                    let available = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_AVAILABLE_EXT);
+                    let disjoint = this.gl.getParameter(this.timerExt.GPU_DISJOINT_EXT);
+                    if (available && !disjoint) {
+                        // See how much time the rendering of the object took in nanoseconds.
+                        let timeElapsed = this.timerExt.getQueryObjectEXT(query, this.timerExt.QUERY_RESULT_EXT);
+                        this.nlosMeasures.push(timeElapsed);
+                        
+                        // Clean up the query object.
+                        this.timerExt.deleteQueryEXT(query);
+
+                        this.nlosQueries.splice(i, 1);
+                    } else {
+                        // console.log('Unable to read a query, exiting loop');
+                        i++;
+                    }
+                }
+            }
+
+            // console.log(`Total time reconstructing: ${1e-6 * total} ms`);
+            // console.log(`Mean time reconstructing: ${1e-6 * total / count} ms`);
+            
+            var mean = 0;
+            var std = 0;
+            var total = 0;
+            var n = this.nlosMeasures.length;
+            this.nlosMeasures.forEach(x => {
+                mean += x;
+                total += x;
+            });
+            if (n > 0) mean /= n;
+            if (n < 2) std = undefined;
+            else {
+                for (var i = 0; i < n; i++) std += (this.nlosMeasures[i] - mean) * (this.nlosMeasures[i] - mean);
+                std = 1e-6 * Math.sqrt(std / (n - 1));
+            }
+        }
+        return [1e-6 * total, 1e-6 * mean, std];
     }
 
     exports.Renderer = Renderer;

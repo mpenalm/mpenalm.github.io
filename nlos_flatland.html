@@ -22,43 +22,87 @@
     <script type="text/javascript" src="src/scene-data.js"></script>
     <script type="text/javascript" src="src/generate-scene.js"></script>
     <script type="text/javascript" src="src/thirdparty/noUiSlider/nouislider.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jsfive@0.3.10/dist/browser/hdf5.js"></script> -->
 </head>
 
 <body onload="new Transient();">
-    <div class="tooltip">
+    <div class="row">
+        <div class="tooltip">
         <img src="assets/img/info.png" alt="Information button" style="height: 40px;">
-        <span class="tooltiptext">
-            In the left of the window, the system shows the current scene being rendered, and scene and capture parameters that can be modified.
-            <ul>
-                <li>The visualization shows fluence in the whole scene instead of radiance. That is, the amount of light passing through each point. There is no participating medium.</li>
-                <li>You can move the emitter position and orientation by clicking and dragging over the scene or using the textboxes.</li>
-                <li>The sensor always looks at the blue dots in the right of the scene, representing SPAD aperture.</li>
-                <li>The scene is around 3.5 meters long in the horizontal (x) direction, and 2 meters long in the vertical (y) direction.</li>
-                <li>Please note that compiling scenes with many segments, such as the Bunny can take a few seconds, but they will only need to be compiled the first time you select them.</li>
-            </ul>
-            
-            In the right of the window, it shows the image obtained by the NLOS imaging method, and its parameters.
-            <ul>
-                <li>Confocal and Time-gated camera models can be evaluated at different instants with the time slider or Play/Pause button. </li>
-                <li>Please note that the Steady-state camera model is not affected by the Time slider but it's still recomputed, and it can take a couple of seconds.</li>
-            </ul>
-        </span>
+            <span class="tooltiptext">
+                In the left of the window, the system shows the current scene being rendered, and scene and capture parameters that can be modified.
+                <ul>
+                    <li>The visualization shows fluence in the whole scene instead of radiance. That is, the amount of light passing through each point. There is no participating medium.</li>
+                    <li>You can move the emitter position and orientation by clicking and dragging over the scene or using the textboxes.</li>
+                    <li>The sensor always looks at the blue dots in the right of the scene, representing SPAD aperture.</li>
+                    <li>The scene is around 3.5 meters long in the horizontal (x) direction, and 2 meters long in the vertical (y) direction.</li>
+                    <li>Please note that compiling scenes with many segments, such as the Bunny can take a few seconds, but they will only need to be compiled the first time you select them.</li>
+                </ul>
+                
+                In the right of the window, it shows the image obtained by the NLOS imaging method, and its parameters.
+                <ul>
+                    <li>Confocal and Time-gated camera models can be evaluated at different instants with the time slider or Play/Pause button. </li>
+                    <li>Please note that the Steady-state camera model is not affected by the Time slider but it's still recomputed, and it can take a couple of seconds.</li>
+                </ul>
+            </span>
+        </div>
+        <div class="button stretch-button active" id="show-hide-latency" style="width: fit-content; margin-left: 30px;">Show/Hide latency table</div>
     </div>
+    <br/>
+
+    <div>
+        <table id="latency-table" style="display: none;">
+            <tr>
+                <th style="width: 33%;">Execution times</th>
+                <th style="width: 33%;">Render</th>
+                <th style="width: 33%;">Reconstruction</th>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td style="text-align: right;"><span id="total-render-time"></span></td>
+                <td style="text-align: right;"><span id="total-rec-time"></span></td>
+            </tr>
+            <tr>
+                <td>Mean per frame</td>
+                <td style="text-align: right;"><span id="mean-render-time"></span></td>
+                <td style="text-align: right;"><span id="mean-rec-time"></span></td>
+            </tr>
+            <tr>
+                <td>Standard deviation</td>
+                <td style="text-align: right;"><span id="std-render-time"></span></td>
+                <td style="text-align: right;"><span id="std-rec-time"></span></td>
+            </tr>
+        </table>
+        <table id="fps-table" style="display: none;">
+            <tr>
+                <th style="width: 75%;">Mean FPS while rendering</th>
+                <td style="width: 25%; text-align: right;"><span id="avg-render-fps"></span></td>
+            </tr>
+            <tr>
+                <th>Frames spent in rendering</th>
+                <td style="text-align: right;"><span id="render-frames"></span></td>
+            </tr>
+        </table>
+    </div>
+
     <div class="width-of-canvas">
         <div id="headers" class="controls row justify" style="position: relative; margin-bottom: 4px;">
             <div class="column">
                 <h1 style="text-align: center;">Simulated scene (fluence)</h1>
-                <div class="row" style="align-items: baseline; margin: auto;">
-                    <!-- For the options to align perfectly with image side borders, remove width and margin options -->
-                    <h3 class="control-title" style="padding-right: 15px;">Scene schematic</h3>
-                    <div id="geometry-visibility-selector"></div>
+                <div class="row justify" style="align-items: baseline; margin: auto;">
+                    <div class="row" style="align-items: baseline;">
+                        <!-- For the options to align perfectly with image side borders, remove width and margin options -->
+                        <h3 class="control-title" style="padding-right: 15px;">Scene schematic</h3>
+                        <div id="geometry-visibility-selector"></div>
+                    </div>
+                    <div class="button stretch-button active" id="save-transient-button">Download transient signal</div>
                 </div>
             </div>
             <div class="column">
                 <h1 style="text-align: center;">NLOS imaging reconstruction</h1>
                 <div class="row justify" style="align-items: baseline; margin: auto;">
                     <!-- For the options to align perfectly with image side borders, remove width and margin options -->
-                    <div id="magnitude-div" class="row col-6-12" style="align-items: baseline;">
+                    <div id="magnitude-div" class="row" style="align-items: baseline;">
                         <h3 class="control-title" style="padding-right: 15px;">Magnitude</h3>
                         <div id="magnitude-selector"></div>
                     </div>
@@ -229,11 +273,11 @@
                 </div>
                 <div class="custom-scene">
                     <div class="col-3-12 col-padding col-left">
-                        <h3 class="control-title">Relay wall roughness</h3>
+                        <h3 class="control-title">Relay segment roughness</h3>
                         <div id="rwall-roughness"></div>
                     </div>
                     <div class="col-2-12 col-padding col-left">
-                        <h3 class="control-title">Material type of the relay wall</h3>
+                        <h3 class="control-title">Material type of the relay segment</h3>
                         <div id="rwall-mat-types"></div>
                     </div>
                 </div>
