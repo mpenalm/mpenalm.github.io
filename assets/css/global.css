@@ -90,3 +90,6 @@ div.lazy {
     font-family: Courier, monospace;
 }
 
+.stay-description p:last-child {
+    margin-bottom: 0;
+}

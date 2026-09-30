@@ -1,0 +1,88 @@
+{%- comment -%}
+Research stays card.
+Each stay lives in _stays/*.md with front matter:
+  role            (optional) e.g. "Visiting Researcher"
+  institution     (required) e.g. "POSTECH"
+  institution_url (optional) link on the institution name
+  lab / lab_url   (optional) group or lab inside the institution
+  location        (optional) e.g. "Pohang, South Korea"
+  date            (required) used ONLY for sorting, e.g. 2026-03-01
+  end_date        (optional) used for the automatic date text
+  period          (optional) free text shown instead of the dates,
+                  e.g. "Spring 2026", "Summer 2023 & Summer 2024"
+  supervisors     (optional) list of names, with or without a title:
+                    - Julio Marco
+                    - Prof. Diego Gutierrez        (leading words ending in "." are the title)
+                    - {title: Professor, name: Diego Gutierrez}   (explicit form, any title)
+                  Names in _data/authors.yml get their link.
+The body of the file (below the front matter) is the optional description.
+{%- endcomment -%}
+{%- assign stays = site.stays | sort: "date" | reverse -%}
+<div class="my-3 bg-white shadow-sm rounded-xl">
+    <h6 class="p-3 mb-0 border-bottom border-gray"><i class="fas fa-plane-departure"></i> Research Stays</h6>
+    <div class="px-3 pb-1">
+        {%- for stay in stays %}
+        <div class="py-2 {% unless forloop.first %}border-top border-gray{% endunless %}">
+            <div class="d-flex flex-wrap">
+                <div class="mr-3">
+                    {%- if stay.role %}{{ stay.role }} at {% endif -%}
+                    {%- if stay.lab -%}
+                        {%- if stay.lab_url %}<a href="{{ stay.lab_url }}" target="_blank">{{ stay.lab }}</a>{% else %}{{ stay.lab }}{% endif %},
+                    {% endif -%}
+                    <strong>
+                    {%- if stay.institution_url %}<a href="{{ stay.institution_url }}" target="_blank">{{ stay.institution }}</a>{% else %}{{ stay.institution }}{% endif -%}
+                    </strong>
+                </div>
+                <div class="ml-auto text-muted no-break"><i>
+                    {%- if stay.period -%}
+                        {{ stay.period }}
+                    {%- else -%}
+                        {{ stay.date | date: "%b %Y" }}{% if stay.end_date %} &ndash; {{ stay.end_date | date: "%b %Y" }}{% endif %}
+                    {%- endif -%}
+                </i></div>
+            </div>
+            {%- if stay.location %}
+            <div class="small text-muted"><i class="fas fa-location-dot fa-fw"></i> {{ stay.location }}</div>
+            {%- endif %}
+            {%- if stay.supervisors and stay.supervisors.size > 0 %}
+            <div class="small"><i class="fas fa-user-tie fa-fw text-muted"></i> <i>Supervised by
+                {% for sup in stay.supervisors -%}
+                    {%- comment -%} Split an optional academic title ("Dr.", "Prof. Dr.") from the name {%- endcomment -%}
+                    {%- if sup.name -%}
+                        {%- assign key = sup.name -%}
+                        {%- assign title = sup.title | default: "" -%}
+                    {%- elsif site.data.authors[sup] -%}
+                        {%- assign key = sup -%}
+                        {%- assign title = "" -%}
+                    {%- else -%}
+                        {%- assign words = sup | split: " " -%}
+                        {%- assign title = "" -%}
+                        {%- assign key = "" -%}
+                        {%- assign in_title = true -%}
+                        {%- for w in words -%}
+                            {%- assign last_char = w | slice: -1, 1 -%}
+                            {%- if in_title and last_char == "." and forloop.last == false -%}
+                                {%- assign title = title | append: " " | append: w -%}
+                            {%- else -%}
+                                {%- assign in_title = false -%}
+                                {%- assign key = key | append: " " | append: w -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                        {%- assign title = title | strip -%}
+                        {%- assign key = key | strip -%}
+                    {%- endif -%}
+                    {%- assign info = site.data.authors[key] -%}
+                    {%- if info.name %}{% assign shown = info.name %}{% else %}{% assign shown = key %}{% endif -%}
+                    {%- if title != "" %}{{ title }} {% endif -%}
+                    {%- if info.url %}<a class="text-body" href="{{ info.url }}" target="_blank">{{ shown }}</a>{% else %}{{ shown }}{% endif -%}
+                    {%- unless forloop.last %}{% if forloop.rindex == 2 %} and {% else %}, {% endif %}{% endunless -%}
+                {%- endfor %}</i></div>
+            {%- endif %}
+            {%- assign description = stay.content | strip_html | strip -%}
+            {%- if description != "" %}
+            <div class="small mt-1 stay-description">{{ stay.content }}</div>
+            {%- endif %}
+        </div>
+        {%- endfor %}
+    </div>
+</div>
